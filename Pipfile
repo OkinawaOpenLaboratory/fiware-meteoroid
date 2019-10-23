@@ -10,6 +10,7 @@ flake8 = "*"
 [packages]
 django = "*"
 djangorestframework = "*"
+django-rest-swagger = "*"
 
 [requires]
 python_version = "3.8"
