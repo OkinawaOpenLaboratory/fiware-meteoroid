@@ -33,14 +33,11 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-### Running with Docker
+### Running with Docker Compose
 
-To run the server on a Docker container, please execute the following from the root directory:
 
 ```bash
-# building the image
-docker build -t meteoroid .
+cd docker
 
-# starting up a container
-docker run -p 8000:8000 meteoroid
-``
+sudo docker-compose up
+```

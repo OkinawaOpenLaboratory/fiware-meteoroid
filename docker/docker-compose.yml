@@ -4,6 +4,11 @@ services:
   mongo:
     image: mongo:3.6
     command: --nojournal
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: meteoroid
+      MONGO_INITDB_ROOT_PASSWORD: meteoroid_password
+      MONGO_INITDB_DATABASE: meteoroid
 
   orion:
     image: fiware/orion
@@ -17,7 +22,17 @@ services:
     build: ../
     image: meteoroid/core:0.0.1
     depends_on:
-      - mongo
+      - migration
       - orion
     ports:
       - "8000:8000"
+    command: python meteoroid/manage.py runserver 0.0.0.0:8000
+
+  migration:
+    build: ../
+    image: meteoroid/core:0.0.1
+    command: python meteoroid/manage.py migrate
+    links:
+      - mongo
+    depends_on:
+      - mongo

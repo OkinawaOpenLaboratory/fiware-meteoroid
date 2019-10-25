@@ -77,8 +77,14 @@ WSGI_APPLICATION = 'meteoroid.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'djongo',
+        'NAME': 'meteoroid',
+        'USER': 'meteoroid',
+        'PASSWORD': 'meteoroid_password',
+        'AUTH_SOURCE': 'admin',
+        'AUTH_MECHANISM': 'SCRAM-SHA-1',
+        'HOST': 'mongo',
+        'PORT': 27017,
     }
 }
 

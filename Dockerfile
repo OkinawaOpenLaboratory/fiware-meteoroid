@@ -10,11 +10,4 @@ RUN pip install pipenv && pipenv install --system
 
 COPY . /opt/meteoroid/
 
-RUN python meteoroid/manage.py migrate
-
 EXPOSE 8000
-
-ENTRYPOINT ["python"]
-
-CMD ["meteoroid/manage.py", "runserver", "0.0.0.0:8000"]
-
