@@ -8,3 +8,10 @@ class FunctionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Function
         fields = '__all__'
+
+
+class ResultSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Result
+        fields = '__all__'
