@@ -12,7 +12,6 @@ class FunctionViewSet(viewsets.ModelViewSet):
 
     @fiware_headers
     def list(self, request, fiware_service, fiware_service_path):
-        # TODO: Obtain faas_name from environment
         faas_driver = FaaSDriver.get_faas_driver()
         faas_functions = faas_driver.list_function(fiware_service, fiware_service_path)
         serializer = self.serializer_class(self.get_queryset(), faas_functions=faas_functions, many=True)
@@ -21,7 +20,6 @@ class FunctionViewSet(viewsets.ModelViewSet):
     @fiware_headers
     @extract_faas_function_param
     def create(self, request, fiware_service, fiware_service_path, param):
-        # TODO: Obtain faas_name from environment
         faas_driver = FaaSDriver.get_faas_driver()
         faas_functions = faas_driver.create_function(fiware_service, fiware_service_path, param)
         serializer = self.serializer_class(request.data, faas_functions=faas_functions)
@@ -32,7 +30,6 @@ class FunctionViewSet(viewsets.ModelViewSet):
     @fiware_headers
     def retrieve(self, request, pk=None, fiware_service='', fiware_service_path='/'):
         function = get_object_or_404(self.get_queryset(), pk=pk)
-        # TODO: Obtain faas_name from environment
         faas_driver = FaaSDriver.get_faas_driver()
         faas_functions = faas_driver.get_function(function.id, fiware_service, fiware_service_path)
         serializer = self.serializer_class(function, faas_functions=faas_functions)
@@ -42,7 +39,6 @@ class FunctionViewSet(viewsets.ModelViewSet):
     @extract_faas_function_param
     def update(self, request, pk=None, fiware_service='', fiware_service_path='/', param={}):
         function = get_object_or_404(self.get_queryset(), pk=pk)
-        # TODO: Obtain faas_name from environment
         faas_driver = FaaSDriver.get_faas_driver()
         faas_functions = faas_driver.update_function(function.id, fiware_service, fiware_service_path, param)
         serializer = self.serializer_class(function, request.data, faas_functions=faas_functions)
@@ -53,7 +49,6 @@ class FunctionViewSet(viewsets.ModelViewSet):
     @fiware_headers
     def destroy(self, request, pk=None, fiware_service='', fiware_service_path='/'):
         function = get_object_or_404(self.get_queryset(), pk=pk)
-        # TODO: Obtain faas_name from environment
         faas_driver = FaaSDriver.get_faas_driver()
         faas_driver.delete_function(function.id, fiware_service, fiware_service_path)
         self.perform_destroy(function)
