@@ -42,10 +42,10 @@ class OpenWhiskDriver(FaaSDriver):
         return OpenWhiskClient().get_function(function_id, fiware_service, fiware_service_path)
 
     def create_function(self, fiware_service, fiware_service_path, data):
-        return OpenWhiskClient().get_function(fiware_service, fiware_service_path, data)
+        return OpenWhiskClient().create_function(fiware_service, fiware_service_path, data)
 
     def update_function(self, function_id, fiware_service, fiware_service_path, data):
-        return OpenWhiskClient().get_function(function_id, fiware_service, fiware_service_path, data)
+        return OpenWhiskClient().update_function(function_id, fiware_service, fiware_service_path, data)
 
     def delete_function(self, function_id, fiware_service, fiware_service_path):
-        return OpenWhiskClient().get_function(function_id, fiware_service, fiware_service_path)
+        return OpenWhiskClient().delete_function(function_id, fiware_service, fiware_service_path)
