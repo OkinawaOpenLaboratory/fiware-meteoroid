@@ -12,6 +12,7 @@ django = "*"
 djangorestframework = "*"
 drf-yasg = "*"
 djongo = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"
