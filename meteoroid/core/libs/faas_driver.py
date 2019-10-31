@@ -33,6 +33,14 @@ class FaaSDriver(metaclass=ABCMeta):
     def delete_function(self, function_id, fiware_service, fiware_service_path):
         raise NotImplementedError()
 
+    @abstractmethod
+    def list_result(self, fiware_service, fiware_service_path):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def retrieve_result(self, result_id, fiware_service, fiware_service_path):
+        raise NotImplementedError()
+
 
 class OpenWhiskDriver(FaaSDriver):
     def escape_fiware_service_path(self, fiware_service_path):
@@ -64,3 +72,13 @@ class OpenWhiskDriver(FaaSDriver):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
         namespace = f'{fiware_service}{escaped_fiware_service_path}'
         return OpenWhiskClient().delete_function(function_id, namespace)
+
+    def list_result(self, fiware_service, fiware_service_path):
+        escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
+        namespace = f'{fiware_service}{escaped_fiware_service_path}'
+        return OpenWhiskClient().list_activation(namespace)
+
+    def retrieve_result(self, result_id, fiware_service, fiware_service_path):
+        escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
+        namespace = f'{fiware_service}{escaped_fiware_service_path}'
+        return OpenWhiskClient().retrieve_activation(result_id, namespace)

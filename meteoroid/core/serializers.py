@@ -34,10 +34,3 @@ class FunctionSerializer(serializers.ModelSerializer):
 
     def get_parameters(self, obj):
         return [{'key': 'key', 'value': 'value'}]
-
-
-class ResultSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.Result
-        fields = '__all__'

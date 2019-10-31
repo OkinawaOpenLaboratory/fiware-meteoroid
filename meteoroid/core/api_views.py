@@ -1,8 +1,9 @@
-from .models import Function
-from .models import Result
-from .serializers import FunctionSerializer
-from .serializers import ResultSerializer
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from .models import Function
+from .serializers import FunctionSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -63,19 +64,17 @@ class FunctionViewSet(viewsets.ModelViewSet):
                                        fiware_service_path=fiware_service_path)
 
 
-class ResultViewSet(viewsets.ModelViewSet):
-    queryset = Result.objects.all()
-    serializer_class = ResultSerializer
-    http_method_names = ['get']
+class ListResultView(APIView):
+    @fiware_headers
+    def get(self, request, fiware_service, fiware_service_path):
+        faas_driver = FaaSDriver.get_faas_driver()
+        results = faas_driver.list_result(fiware_service, fiware_service_path)
+        return Response(results)
 
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
 
-    def retrieve(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
-
-    def get_queryset(self):
-        fiware_service = self.request.META.get('HTTP_FIWARE_SERVICE', '')
-        fiware_service_path = self.request.META.get('HTTP_FIWARE_SERVICEPATH', '/')
-        return Result.objects.filter(fiware_service=fiware_service,
-                                     fiware_service_path=fiware_service_path)
+class RetrieveResultView(APIView):
+    @fiware_headers
+    def get(self, request, pk, fiware_service, fiware_service_path):
+        faas_driver = FaaSDriver.get_faas_driver()
+        result = faas_driver.retrieve_result(pk, fiware_service, fiware_service_path)
+        return Response(result)
