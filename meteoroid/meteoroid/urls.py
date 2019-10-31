@@ -34,7 +34,6 @@ schema_view = get_schema_view(
 )
 
 
-print(api_urlpatterns)
 urlpatterns = [
    re_path('api/v1/', include(api_urlpatterns)),
    re_path('admin/', admin.site.urls),
