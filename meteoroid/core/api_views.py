@@ -13,7 +13,7 @@ class FunctionViewSet(viewsets.ModelViewSet):
     @fiware_headers
     def list(self, request, fiware_service, fiware_service_path):
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_functions = faas_driver.list_function(fiware_service, fiware_service_path)
+        faas_functions = faas_driver.get_function_list(fiware_service, fiware_service_path)
         serializer = self.serializer_class(self.get_queryset(), faas_functions=faas_functions, many=True)
         return Response(serializer.data)
 
