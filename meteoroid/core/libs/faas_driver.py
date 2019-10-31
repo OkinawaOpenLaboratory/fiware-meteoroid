@@ -14,7 +14,7 @@ class FaaSDriver(metaclass=ABCMeta):
         return cls.__instance
 
     @abstractmethod
-    def list_function(self, fiware_service, fiware_service_path):
+    def get_function_list(self, fiware_service, fiware_service_path):
         raise NotImplementedError()
 
     @abstractmethod
@@ -35,17 +35,17 @@ class FaaSDriver(metaclass=ABCMeta):
 
 
 class OpenWhiskDriver(FaaSDriver):
-    def list_function(self, fiware_service, fiware_service_path):
-        return OpenWhiskClient().list_function(fiware_service, fiware_service_path)
+    def get_function_list(self, fiware_service, fiware_service_path):
+        return OpenWhiskClient().get_function_list(fiware_service, fiware_service_path)
 
     def get_function(self, function_id, fiware_service, fiware_service_path):
         return OpenWhiskClient().get_function(function_id, fiware_service, fiware_service_path)
 
     def create_function(self, fiware_service, fiware_service_path, data):
-        return OpenWhiskClient().create_function(fiware_service, fiware_service_path, data)
+        return OpenWhiskClient().create_or_update_function(fiware_service, fiware_service_path, data)
 
     def update_function(self, function_id, fiware_service, fiware_service_path, data):
-        return OpenWhiskClient().update_function(function_id, fiware_service, fiware_service_path, data)
+        return OpenWhiskClient().create_or_update_function(function_id, fiware_service, fiware_service_path, data)
 
     def delete_function(self, function_id, fiware_service, fiware_service_path):
         return OpenWhiskClient().delete_function(function_id, fiware_service, fiware_service_path)
