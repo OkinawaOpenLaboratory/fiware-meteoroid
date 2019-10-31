@@ -1,3 +1,4 @@
+import os
 from abc import ABCMeta, abstractmethod
 from .clients.open_whisk_client import OpenWhiskClient
 
@@ -6,8 +7,7 @@ class FaaSDriver(metaclass=ABCMeta):
     __instance = None
     @classmethod
     def get_faas_driver(cls):
-        # TODO: Obtain faas_name from environment
-        faas_name = 'open_whisk'
+        faas_name = os.environ.get('FAAS_NAME', 'open_whisk')
         if not cls.__instance:
             if faas_name == 'open_whisk':
                 cls.__instance = OpenWhiskDriver()

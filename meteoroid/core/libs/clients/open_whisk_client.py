@@ -24,4 +24,3 @@ class OpenWhiskClient:
 
     def delete_function(self, function_id, namespace):
         pass
-
