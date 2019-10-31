@@ -10,6 +10,7 @@ class FIWAREBase(models.Model):
 
 
 class Function(FIWAREBase):
+    name = models.CharField(max_length=64)
 
     def __str__(self):
-        return f'{self.fiware_service}{self.fiware_service_path}'
+        return f'{self.fiware_service}{self.fiware_service_path} {self.name}'

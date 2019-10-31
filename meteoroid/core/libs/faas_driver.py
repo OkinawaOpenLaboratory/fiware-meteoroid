@@ -14,11 +14,11 @@ class FaaSDriver(metaclass=ABCMeta):
         return cls.__instance
 
     @abstractmethod
-    def get_function_list(self, fiware_service, fiware_service_path):
+    def list_function(self, fiware_service, fiware_service_path):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_function(self, function_id, fiware_service, fiware_service_path):
+    def retrieve_function(self, function, fiware_service, fiware_service_path):
         raise NotImplementedError()
 
     @abstractmethod
@@ -26,41 +26,89 @@ class FaaSDriver(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abstractmethod
-    def update_function(self, function_id, fiware_service, fiware_service_path, data):
+    def update_function(self, function, fiware_service, fiware_service_path, data):
         raise NotImplementedError()
 
     @abstractmethod
-    def delete_function(self, function_id, fiware_service, fiware_service_path):
+    def delete_function(self, function, fiware_service, fiware_service_path):
         raise NotImplementedError()
 
 
 class OpenWhiskDriver(FaaSDriver):
     def escape_fiware_service_path(self, fiware_service_path):
         ESCAPE_TARGET_STR = '/'
-        ESCAPE_NEW_STR = '-'
+        ESCAPE_NEW_STR = 'slash'
         return fiware_service_path.replace(ESCAPE_TARGET_STR, ESCAPE_NEW_STR)
 
-    def get_function_list(self, fiware_service, fiware_service_path):
-        escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        return OpenWhiskClient().get_function_list(namespace)
+    def __build_function_request_parameter(self, namespace, data):
+        request_parameter = {
+            'namespace': namespace,
+            'name': data['name'],
+            'exec': {
+                'kind': data['language'],
+                'code': data['code']
+            }
+        }
+        if 'parameters' in data:
+            request_parameter['parameters'] = data['parameters']
+        return request_parameter
 
-    def get_function(self, function_id, fiware_service, fiware_service_path):
+    def list_function(self, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
         namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        return OpenWhiskClient().get_function(function_id, namespace)
+        function_list = []
+        action_list = OpenWhiskClient().list_action(namespace)
+        for action in action_list:
+            language = ''
+            for annotation in action['annotations']:
+                if annotation['key'] == 'exec':
+                    language = annotation['value']
+            function = {
+                'namespace': f'{fiware_service}{fiware_service_path}',
+                'name': action['name'],
+                'language': language,
+                'version': action['version']
+            }
+            function_list.append(function)
+        return function_list
 
-    def create_function(self, namespace, data, fiware_service, fiware_service_path):
+    def retrieve_function(self, function, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
         namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        return OpenWhiskClient().create_or_update_function(namespace, data)
+        action = OpenWhiskClient().retrieve_action(function.name, namespace)
+        language = ''
+        for annotation in action['annotations']:
+            if annotation['key'] == 'exec':
+                language = annotation['value']
+        function = {
+            'namespace': f'{fiware_service}{fiware_service_path}',
+            'name': action['name'],
+            'language': language,
+            'version': action['version']
+        }
+        return function
 
-    def update_function(self, function_id, fiware_service, fiware_service_path, data):
+    def create_function(self, fiware_service, fiware_service_path, data):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
         namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        return OpenWhiskClient().create_or_update_function(function_id, namespace, data)
 
-    def delete_function(self, function_id, fiware_service, fiware_service_path):
+        response = OpenWhiskClient().create_action(namespace,
+                                                   self.__build_function_request_parameter(namespace, data))
+        response['code'] = data['code']
+        response['language'] = data['language']
+        return response
+
+    def update_function(self, function, fiware_service, fiware_service_path, data):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
         namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        return OpenWhiskClient().delete_function(function_id, namespace)
+
+        response = OpenWhiskClient().update_action(namespace,
+                                                   self.__build_function_request_parameter(namespace, data))
+        response['code'] = data['code']
+        response['language'] = data['language']
+        return response
+
+    def delete_function(self, function, fiware_service, fiware_service_path):
+        escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
+        namespace = f'{fiware_service}{escaped_fiware_service_path}'
+        return OpenWhiskClient().delete_action(function.name, namespace)
