@@ -27,3 +27,17 @@ class OpenWhiskClient:
 
     def delete_function(self, function_id, namespace):
         pass
+
+    def list_activation(self, namespace):
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/activations',
+                                headers=self.headers,
+                                auth=(self.user, self.password),
+                                verify=False)
+        return response.json()
+
+    def retrieve_activation(self, activation_id, namespace):
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/activations/{activation_id}',
+                                headers=self.headers,
+                                auth=(self.user, self.password),
+                                verify=False)
+        return response.json()

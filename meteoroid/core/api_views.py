@@ -1,3 +1,7 @@
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 from .models import Function
 from .serializers import FunctionSerializer
 from django.shortcuts import get_object_or_404
@@ -58,3 +62,19 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def get_queryset(self, fiware_service, fiware_service_path):
         return Function.objects.filter(fiware_service=fiware_service,
                                        fiware_service_path=fiware_service_path)
+
+
+class ListResultView(APIView):
+    @fiware_headers
+    def get(self, request, fiware_service, fiware_service_path):
+        faas_driver = FaaSDriver.get_faas_driver()
+        results = faas_driver.list_result(fiware_service, fiware_service_path)
+        return Response(results)
+
+
+class RetrieveResultView(APIView):
+    @fiware_headers
+    def get(self, request, pk, fiware_service, fiware_service_path):
+        faas_driver = FaaSDriver.get_faas_driver()
+        result = faas_driver.retrieve_result(pk, fiware_service, fiware_service_path)
+        return Response(result)
