@@ -1,12 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Function
 from .serializers import FunctionSerializer
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, status
-from rest_framework.response import Response
 from .libs.faas_driver import FaaSDriver
 from .libs.decorators import fiware_headers, extract_faas_function_param
 
