@@ -13,20 +13,21 @@ from .libs.decorators import fiware_headers, extract_faas_function_param
 
 class FunctionViewSet(viewsets.ModelViewSet):
     serializer_class = FunctionSerializer
+    http_method_names = ['get', 'post', 'head', 'put']
 
     @fiware_headers
     def list(self, request, fiware_service, fiware_service_path):
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_functions = faas_driver.get_function_list(fiware_service, fiware_service_path)
-        serializer = self.serializer_class(self.get_queryset(), faas_functions=faas_functions, many=True)
+        faas_function_data = faas_driver.list_function(fiware_service, fiware_service_path)
+        serializer = self.serializer_class(self.get_queryset(), faas_function_data=faas_function_data, many=True)
         return Response(serializer.data)
 
     @fiware_headers
     @extract_faas_function_param
     def create(self, request, fiware_service, fiware_service_path, param):
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_functions = faas_driver.create_function(fiware_service, fiware_service_path, param)
-        serializer = self.serializer_class(request.data, faas_functions=faas_functions)
+        faas_function_data = faas_driver.create_function(fiware_service, fiware_service_path, param)
+        serializer = self.serializer_class(data=request.data, faas_function_data=faas_function_data)
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data)
@@ -35,8 +36,8 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None, fiware_service='', fiware_service_path='/'):
         function = get_object_or_404(self.get_queryset(), pk=pk)
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_functions = faas_driver.get_function(function.id, fiware_service, fiware_service_path)
-        serializer = self.serializer_class(function, faas_functions=faas_functions)
+        faas_function_data = faas_driver.retrieve_function(function, fiware_service, fiware_service_path)
+        serializer = self.serializer_class(function, faas_function_data=faas_function_data)
         return Response(serializer.data)
 
     @fiware_headers
@@ -44,8 +45,8 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None, fiware_service='', fiware_service_path='/', param={}):
         function = get_object_or_404(self.get_queryset(), pk=pk)
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_functions = faas_driver.update_function(function.id, fiware_service, fiware_service_path, param)
-        serializer = self.serializer_class(function, request.data, faas_functions=faas_functions)
+        faas_function_data = faas_driver.update_function(function, fiware_service, fiware_service_path, param)
+        serializer = self.serializer_class(function, data=request.data, faas_function_data=faas_function_data)
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data)
@@ -54,7 +55,7 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def destroy(self, request, pk=None, fiware_service='', fiware_service_path='/'):
         function = get_object_or_404(self.get_queryset(), pk=pk)
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_driver.delete_function(function.id, fiware_service, fiware_service_path)
+        faas_driver.delete_function(function, fiware_service, fiware_service_path)
         self.perform_destroy(function)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

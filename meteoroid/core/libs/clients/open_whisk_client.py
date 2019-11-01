@@ -1,5 +1,11 @@
 import requests
 import os
+import json
+from rest_framework.exceptions import APIException
+
+
+class OpenWhiskClientException(APIException):
+    pass
 
 
 class OpenWhiskClient:
@@ -12,27 +18,63 @@ class OpenWhiskClient:
             'User-Agent': 'fiware-meteoroid/0.1'
         }
 
-    def get_function_list(self, namespace):
+    def exception_handler(self, response):
+        if response.status_code != 200:
+            raise OpenWhiskClientException(detail=response.text,
+                                           code=response.status_code)
+
+    def list_action(self, namespace):
         response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions',
                                 headers=self.headers,
                                 auth=(self.user, self.password),
                                 verify=False)
+        self.exception_handler(response)
         return response.json()
 
-    def get_function(self, function_id, namespace):
-        pass
+    def retrieve_action(self, action_name, namespace):
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions/{action_name}',
+                                headers=self.headers,
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response.json()
 
-    def create_or_update_function(self, namespace, data):
-        pass
+    def create_action(self, namespace, data):
+        self.headers['Content-Type'] = 'application/json'
+        action_name = data['name']
+        response = requests.put(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions/{action_name}',
+                                headers=self.headers,
+                                data=json.dumps(data),
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response.json()
 
-    def delete_function(self, function_id, namespace):
-        pass
+    def update_action(self, namespace, data):
+        self.headers['Content-Type'] = 'application/json'
+        action_name = data['name']
+        response = requests.put(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions/{action_name}?overwrite=true',
+                                headers=self.headers,
+                                data=json.dumps(data),
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response.json()
+
+    def delete_action(self, action_name, namespace):
+        response = requests.delete(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions/{action_name}',
+                                   headers=self.headers,
+                                   auth=(self.user, self.password),
+                                   verify=False)
+        self.exception_handler(response)
+        return response.json()
 
     def list_activation(self, namespace):
         response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/activations',
                                 headers=self.headers,
                                 auth=(self.user, self.password),
                                 verify=False)
+        self.exception_handler(response)
         return response.json()
 
     def retrieve_activation(self, activation_id, namespace):
@@ -40,4 +82,5 @@ class OpenWhiskClient:
                                 headers=self.headers,
                                 auth=(self.user, self.password),
                                 verify=False)
+        self.exception_handler(response)
         return response.json()
