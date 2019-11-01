@@ -14,3 +14,6 @@ class Function(FIWAREBase):
 
     def __str__(self):
         return f'{self.fiware_service}{self.fiware_service_path} {self.name}'
+
+    class Meta:
+        unique_together = ('name', 'fiware_service', 'fiware_service_path')
