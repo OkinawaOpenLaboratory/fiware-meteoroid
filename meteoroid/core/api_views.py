@@ -9,6 +9,7 @@ from .libs.decorators import fiware_headers, extract_faas_function_param
 
 class FunctionViewSet(viewsets.ModelViewSet):
     serializer_class = FunctionSerializer
+    http_method_names = ['get', 'post', 'head', 'put']
 
     @fiware_headers
     def list(self, request, fiware_service, fiware_service_path):
