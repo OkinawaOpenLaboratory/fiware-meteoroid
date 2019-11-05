@@ -23,10 +23,10 @@ class Endpoint(FIWAREBase):
     name = models.CharField(max_length=64)
     path = models.CharField(max_length=64)
     method = models.CharField(max_length=8)
-    funciton = models.ForeignKey(Function, on_delete=models.CASCADE)
+    function = models.ForeignKey(Function, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.fiware_service}{self.fiware_service_path} {self.name}{self.path} {self.method}'
+        return f'{self.name}{self.path} {self.function.name} {self.method}'
 
     class Meta:
         unique_together = ('name', 'path', 'method', 'fiware_service', 'fiware_service_path')
