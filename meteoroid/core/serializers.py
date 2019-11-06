@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Function
+from .models import Function, Endpoint
 
 
 class FunctionSerializer(serializers.ModelSerializer):
@@ -39,4 +39,26 @@ class FunctionSerializer(serializers.ModelSerializer):
             if function['name'] == function_name:
                 if value_name in function:
                     return function[value_name]
-                return ''
+            return ''
+
+
+class EndpointSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+
+    def __init__(self, *args, **kwargs):
+        self.faas_endpoint_data = kwargs.pop('faas_endpoint_data', '')
+        super(EndpointSerializer, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Endpoint
+        fields = '__all__'
+
+    def get_url(self, obj):
+        if not isinstance(self.faas_endpoint_data, list):
+            if 'url' in self.faas_endpoint_data:
+                return self.faas_endpoint_data['url']
+        else:
+            for endpoint in self.faas_endpoint_data:
+                if obj.equals_faas_data(endpoint):
+                    return endpoint['url']
+        return ''
