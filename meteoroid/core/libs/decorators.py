@@ -25,3 +25,13 @@ def extract_faas_function_param(func):
 
         return func(*args, **kwargs, param=param)
     return wrapper
+
+
+def extract_faas_subscription_param(func):
+    def wrapper(*args, **kwargs):
+        self = args[0]
+        endpoint_id = self.request.data['endpoint_id']
+        orion_subscription = self.request.data['orion_subscription']
+        return func(*args, **kwargs, endpoint_id=endpoint_id,
+                    orion_subscription=orion_subscription)
+    return wrapper
