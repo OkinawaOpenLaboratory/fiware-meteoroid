@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Function
+from .models import Endpoint
+from .models import Subscription
 
 
 class FunctionSerializer(serializers.ModelSerializer):
@@ -40,3 +42,20 @@ class FunctionSerializer(serializers.ModelSerializer):
                 if value_name in function:
                     return function[value_name]
                 return ''
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    fiware_service = serializers.CharField(max_length=64, default='', allow_blank=True)
+    fiware_service_path = serializers.CharField(max_length=64, default='/')
+    endpoint_id = serializers.PrimaryKeyRelatedField(queryset=Endpoint.objects.filter())
+    orion_subscription_id = serializers.CharField(max_length=64)
+
+    def __init__(self, *args, **kwargs):
+        super(SubscriptionSerializer, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Subscription
+        fields = '__all__'
+
+    def get_endpoint_id(self, obj):
+        return self.get_value(obj.name, 'endpoint_id')

@@ -30,3 +30,14 @@ class Endpoint(FIWAREBase):
 
     class Meta:
         unique_together = ('name', 'path', 'method', 'fiware_service', 'fiware_service_path')
+
+
+class Subscription(FIWAREBase):
+    endpoint_id = models.ForeignKey(Endpoint, on_delete=models.CASCADE)
+    orion_subscription_id = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f'{self.fiware_service}{self.fiware_service_path} {self.endpoint_id}'
+
+    class Meta:
+        unique_together = ('fiware_service', 'fiware_service_path')

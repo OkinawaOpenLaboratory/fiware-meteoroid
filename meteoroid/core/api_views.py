@@ -1,12 +1,19 @@
+import os
+
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Function
+from .models import Endpoint
+from .models import Subscription
 from .serializers import FunctionSerializer
+from .serializers import SubscriptionSerializer
 from django.shortcuts import get_object_or_404
 from .libs.faas_driver import FaaSDriver
 from .libs.decorators import fiware_headers, extract_faas_function_param
+from .libs.decorators import extract_faas_subscription_param
+from .libs.clients.orion_subscription_client import OrionSubscriptionClient
 
 
 class FunctionViewSet(viewsets.ModelViewSet):
@@ -61,6 +68,66 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def get_queryset(self, fiware_service, fiware_service_path):
         return Function.objects.filter(fiware_service=fiware_service,
                                        fiware_service_path=fiware_service_path)
+
+
+class SubscriptionViewSet(viewsets.ModelViewSet):
+    serializer_class = SubscriptionSerializer
+    http_method_names = ['get', 'post', 'delete']
+
+    @fiware_headers
+    def list(self, request, fiware_service, fiware_service_path):
+        serializer = self.serializer_class(
+                         self.get_queryset(),
+                         many=True)
+        return Response(serializer.data)
+
+    @fiware_headers
+    @extract_faas_subscription_param
+    def create(self, request, fiware_service, fiware_service_path,
+               endpoint_id, orion_subscription, param):
+        endpoint = Endpoint.objects.get(id=endpoint_id)
+        host = os.environ.get('OPEN_WHISK_HOST', '')
+        url = f'https://{host}{endpoint.path}'
+        orion_subscription['notification']['http'] = {'url': url}
+        osc = OrionSubscriptionClient()
+        location = osc.create_subscription(
+                       orion_subscription,
+                       fiware_service,
+                       fiware_service_path).headers['Location']
+        sub_id = location.replace('/v2/subscriptions/', '')
+        data = request.data
+        data['orion_subscription'] = orion_subscription
+        data['orion_subscription_id'] = sub_id
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid()
+        serializer.save()
+        return Response(serializer.data)
+
+    @fiware_headers
+    def retrieve(self, request, pk=None, fiware_service='',
+                 fiware_service_path='/'):
+        subscription = get_object_or_404(self.get_queryset(),
+                                         pk=pk)
+        serializer = self.serializer_class(subscription)
+        return Response(serializer.data)
+
+    @fiware_headers
+    def destroy(self, request, pk=None, fiware_service='',
+                fiware_service_path='/'):
+        subscription = get_object_or_404(self.get_queryset(), pk=pk)
+        osc = OrionSubscriptionClient()
+        osc.delete_subscription(
+            subscription.orion_subscription_id,
+            fiware_service,
+            fiware_service_path)
+        self.perform_destroy(subscription)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @fiware_headers
+    def get_queryset(self, fiware_service, fiware_service_path):
+        return Subscription.objects.filter(
+                   fiware_service=fiware_service,
+                   fiware_service_path=fiware_service_path)
 
 
 class ListResultView(APIView):
