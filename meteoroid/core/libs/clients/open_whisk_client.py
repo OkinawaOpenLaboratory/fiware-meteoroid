@@ -12,6 +12,8 @@ class OpenWhiskClient:
     def __init__(self):
         self.user = os.environ.get('OPEN_WHISK_USER', '')
         self.password = os.environ.get('OPEN_WHISK_PASSWORD', '')
+        self.whisk_system_user = os.environ.get('OPEN_WHISK_SYSTEM_USER', '')
+        self.whisk_system_password = os.environ.get('OPEN_WHISK_SYSTEM_PASSWORD', '')
         self.host = os.environ.get('OPEN_WHISK_HOST', '')
         self.endpoint = f'https://{self.host}'
         self.headers = {
@@ -73,7 +75,7 @@ class OpenWhiskClient:
     def list_api(self, namespace):
         response = requests.get(f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/getApi.http?{self.api_query_param}',
                                 headers=self.headers,
-                                auth=(self.user, self.password),
+                                auth=(self.whisk_system_user, self.whisk_system_password),
                                 verify=False)
         self.exception_handler(response)
         return response.json()
@@ -82,7 +84,7 @@ class OpenWhiskClient:
         response = requests.get(f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/getApi.http?' +
                                 f'{self.api_query_param}&basepath={api_name}',
                                 headers=self.headers,
-                                auth=(self.user, self.password),
+                                auth=(self.whisk_system_user, self.whisk_system_password),
                                 verify=False)
         self.exception_handler(response)
         return response.json()
@@ -95,7 +97,7 @@ class OpenWhiskClient:
         response = requests.post(f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/createApi.http?{self.api_query_param}',
                                  headers=self.headers,
                                  data=json.dumps(data),
-                                 auth=(self.user, self.password),
+                                 auth=(self.whisk_system_user, self.whisk_system_password),
                                  verify=False)
         self.exception_handler(response)
         return response.json()
@@ -104,7 +106,7 @@ class OpenWhiskClient:
         response = requests.delete(f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/deleteApi.http?' +
                                    f'{self.api_query_param}&basepath={api_name}',
                                    headers=self.headers,
-                                   auth=(self.user, self.password),
+                                   auth=(self.whisk_system_user, self.whisk_system_password),
                                    verify=False)
         self.exception_handler(response)
         return response.json()
