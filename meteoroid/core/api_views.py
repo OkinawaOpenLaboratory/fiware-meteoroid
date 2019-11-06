@@ -84,7 +84,7 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
     @fiware_headers
     @extract_faas_subscription_param
     def create(self, request, fiware_service, fiware_service_path,
-               endpoint_id, orion_subscription, param):
+               endpoint_id, orion_subscription):
         endpoint = Endpoint.objects.get(id=endpoint_id)
         host = os.environ.get('OPEN_WHISK_HOST', '')
         url = f'https://{host}{endpoint.path}'
