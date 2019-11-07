@@ -126,9 +126,8 @@ class OpenWhiskDriver(FaaSDriver):
 
     def list_function(self, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
         function_list = []
-        action_list = OpenWhiskClient().list_action(namespace)
+        action_list = OpenWhiskClient().list_action('guest')
         for action in action_list:
             language = ''
             for annotation in action['annotations']:
@@ -145,8 +144,7 @@ class OpenWhiskDriver(FaaSDriver):
 
     def retrieve_function(self, function, fiware_service, fiware_service_path, code=False):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        action = OpenWhiskClient().retrieve_action(function.name, namespace, code=code)
+        action = OpenWhiskClient().retrieve_action(function.name, 'guest', code=code)
         function = {
             'namespace': f'{fiware_service}{fiware_service_path}',
             'name': action['name'],
@@ -160,39 +158,34 @@ class OpenWhiskDriver(FaaSDriver):
 
     def create_function(self, fiware_service, fiware_service_path, data):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
 
-        response = OpenWhiskClient().create_action(namespace,
-                                                   self.__build_action_request_parameter(namespace, data))
+        response = OpenWhiskClient().create_action('guest',
+                                                   self.__build_action_request_parameter('guest', data))
         response['code'] = data['code']
         response['language'] = data['language']
         return response
 
     def update_function(self, function, fiware_service, fiware_service_path, data):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
 
-        response = OpenWhiskClient().update_action(namespace,
-                                                   self.__build_action_request_parameter(namespace, data))
+        response = OpenWhiskClient().update_action('guest',
+                                                   self.__build_action_request_parameter('guest', data))
         response['code'] = data['code']
         response['language'] = data['language']
         return response
 
     def delete_function(self, function, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        return OpenWhiskClient().delete_action(function.name, namespace)
+        return OpenWhiskClient().delete_action(function.name, 'guest')
 
     def list_endpoint(self, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        api_list = OpenWhiskClient().list_api(namespace)
+        api_list = OpenWhiskClient().list_api('guest')
         return self.__build_all_endpoint_list_response(api_list)
 
     def retrieve_endpoint(self, endpoint, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        api_list = OpenWhiskClient().list_api(namespace)
+        api_list = OpenWhiskClient().list_api('guest')
         for endpoint_data in self.__build_all_endpoint_list_response(api_list):
             if endpoint.equals_faas_data(endpoint_data):
                 return endpoint_data
@@ -200,10 +193,9 @@ class OpenWhiskDriver(FaaSDriver):
 
     def create_endpoint(self, fiware_service, fiware_service_path, data):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
 
-        api = OpenWhiskClient().create_api(namespace,
-                                           self.__build_api_request_parameter(namespace, data))
+        api = OpenWhiskClient().create_api('guest',
+                                           self.__build_api_request_parameter('guest', data))
         function = Function.objects.filter(fiware_service=fiware_service,
                                            fiware_service_path=fiware_service_path).get(pk=data['function'])
         for endpoint_data in self.__build_endpoint_list_response(api):
@@ -215,16 +207,13 @@ class OpenWhiskDriver(FaaSDriver):
 
     def delete_endpoint(self, endpoint, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        response = OpenWhiskClient().delete_api(endpoint.name, namespace)
+        response = OpenWhiskClient().delete_api(endpoint.name, 'guest')
         return response
 
     def list_result(self, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        return OpenWhiskClient().list_activation(namespace)
+        return OpenWhiskClient().list_activation('guest')
 
     def retrieve_result(self, result_id, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
-        namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        return OpenWhiskClient().retrieve_activation(result_id, namespace)
+        return OpenWhiskClient().retrieve_activation(result_id, 'guest')
