@@ -90,10 +90,12 @@ class OpenWhiskClient:
 
     def create_api(self, namespace, data):
         action_name = data['apidoc']['action']['name']
-        data['apidoc']['action']['backendUrl'] = f'https://{self.host}/api/v1/web/{namespace}/default/{action_name}.http'
+        backend_url = f'https://{self.host}/api/v1/web/{namespace}/default/{action_name}.http'
+        data['apidoc']['action']['backendUrl'] = backend_url
         data['apidoc']['action']['authkey'] = f'{self.user}:{self.password}'
         self.headers['Content-Type'] = 'application/json'
-        response = requests.post(f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/createApi.http?{self.api_query_param}',
+        response = requests.post(f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/createApi.http?' +
+                                 '{self.api_query_param}',
                                  headers=self.headers,
                                  data=json.dumps(data),
                                  auth=(self.user, self.password),

@@ -78,6 +78,3 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
         fields = '__all__'
-
-    def get_endpoint_id(self, obj):
-        return self.get_value(obj.name, 'endpoint_id')

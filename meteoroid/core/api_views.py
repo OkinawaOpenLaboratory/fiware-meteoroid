@@ -4,22 +4,13 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Function
-from .models import Endpoint
-from .models import Subscription
-from .serializers import FunctionSerializer
-from .serializers import SubscriptionSerializer
+from .models import Function, Endpoint, Subscription
+from .serializers import FunctionSerializer, EndpointSerializer, SubscriptionSerializer
 from django.shortcuts import get_object_or_404
 from .libs.faas_driver import FaaSDriver
 from .libs.decorators import fiware_headers, extract_faas_function_param
 from .libs.decorators import extract_faas_subscription_param
 from .libs.clients.orion_subscription_client import OrionSubscriptionClient
-from .models import Function, Endpoint
-from .serializers import FunctionSerializer, EndpointSerializer
-from django.shortcuts import get_object_or_404
-from .libs.faas_driver import FaaSDriver
-from .libs.decorators import (fiware_headers,
-                              extract_faas_function_param)
 
 
 class FunctionViewSet(viewsets.ModelViewSet):
