@@ -38,7 +38,10 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def create(self, request, fiware_service, fiware_service_path, param):
         faas_driver = FaaSDriver.get_faas_driver()
         faas_function_data = faas_driver.create_function(fiware_service, fiware_service_path, param)
-        serializer = self.serializer_class(data=request.data, faas_function_data=faas_function_data)
+        data = request.data
+        data['fiware_service'] = fiware_service
+        data['fiware_service_path'] = fiware_service_path
+        serializer = self.serializer_class(data=data, faas_function_data=faas_function_data)
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data)
@@ -58,7 +61,10 @@ class FunctionViewSet(viewsets.ModelViewSet):
         function = get_object_or_404(self.get_queryset(), pk=pk)
         faas_driver = FaaSDriver.get_faas_driver()
         faas_function_data = faas_driver.update_function(function, fiware_service, fiware_service_path, param)
-        serializer = self.serializer_class(function, data=request.data, faas_function_data=faas_function_data)
+        data = request.data
+        data['fiware_service'] = fiware_service
+        data['fiware_service_path'] = fiware_service_path
+        serializer = self.serializer_class(function, data=data, faas_function_data=faas_function_data)
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data)
@@ -92,7 +98,10 @@ class EndpointViewSet(viewsets.ModelViewSet):
     def create(self, request, fiware_service, fiware_service_path):
         faas_driver = FaaSDriver.get_faas_driver()
         faas_endpoint_data = faas_driver.create_endpoint(fiware_service, fiware_service_path, request.data)
-        serializer = self.serializer_class(data=request.data, faas_endpoint_data=faas_endpoint_data)
+        data = request.data
+        data['fiware_service'] = fiware_service
+        data['fiware_service_path'] = fiware_service_path
+        serializer = self.serializer_class(data=data, faas_endpoint_data=faas_endpoint_data)
         serializer.is_valid()
         serializer.save()
         return Response(serializer.data)
@@ -145,6 +154,8 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
                        fiware_service_path).headers['Location']
         sub_id = location.replace('/v2/subscriptions/', '')
         data = request.data
+        data['fiware_service'] = fiware_service
+        data['fiware_service_path'] = fiware_service_path
         data['orion_subscription'] = orion_subscription
         data['orion_subscription_id'] = sub_id
         serializer = self.serializer_class(data=data)
