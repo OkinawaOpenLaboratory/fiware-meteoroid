@@ -143,20 +143,19 @@ class OpenWhiskDriver(FaaSDriver):
             function_list.append(function)
         return function_list
 
-    def retrieve_function(self, function, fiware_service, fiware_service_path):
+    def retrieve_function(self, function, fiware_service, fiware_service_path, code=False):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
         namespace = f'{fiware_service}{escaped_fiware_service_path}'
-        action = OpenWhiskClient().retrieve_action(function.name, namespace)
-        language = ''
-        for annotation in action['annotations']:
-            if annotation['key'] == 'exec':
-                language = annotation['value']
+        action = OpenWhiskClient().retrieve_action(function.name, namespace, code=code)
         function = {
             'namespace': f'{fiware_service}{fiware_service_path}',
             'name': action['name'],
-            'language': language,
-            'version': action['version']
+            'language': action['exec']['kind'],
+            'version': action['version'],
+            'parameters': action['parameters']
         }
+        if code:
+            function['code'] = action['exec']['code']
         return function
 
     def create_function(self, fiware_service, fiware_service_path, data):

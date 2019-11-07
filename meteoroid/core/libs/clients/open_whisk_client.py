@@ -34,8 +34,9 @@ class OpenWhiskClient:
         self.exception_handler(response)
         return response.json()
 
-    def retrieve_action(self, action_name, namespace):
-        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions/{action_name}',
+    def retrieve_action(self, action_name, namespace, code=False):
+        code = 'true' if code else 'false'
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions/{action_name}?code={code}',
                                 headers=self.headers,
                                 auth=(self.user, self.password),
                                 verify=False)

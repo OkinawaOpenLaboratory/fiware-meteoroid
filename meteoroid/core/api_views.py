@@ -47,7 +47,8 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk=None, fiware_service='', fiware_service_path='/'):
         function = get_object_or_404(self.get_queryset(), pk=pk)
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_function_data = faas_driver.retrieve_function(function, fiware_service, fiware_service_path)
+        code = self.request.query_params.get('code') == 'true'
+        faas_function_data = faas_driver.retrieve_function(function, fiware_service, fiware_service_path, code=code)
         serializer = self.serializer_class(function, faas_function_data=faas_function_data)
         return Response(serializer.data)
 
