@@ -1,7 +1,7 @@
 import os
 from abc import ABCMeta, abstractmethod
 from .clients.open_whisk_client import OpenWhiskClient
-from ..models import Function
+from ..models import Function, Endpoint
 
 
 class FaaSDriver(metaclass=ABCMeta):
@@ -207,7 +207,15 @@ class OpenWhiskDriver(FaaSDriver):
 
     def delete_endpoint(self, endpoint, fiware_service, fiware_service_path):
         escaped_fiware_service_path = self.escape_fiware_service_path(fiware_service_path)
+        other_endpoints = Endpoint.objects.exclude(id=endpoint.id)\
+            .filter(fiware_service=endpoint.fiware_service)\
+            .filter(fiware_service_path=endpoint.fiware_service_path)\
+            .filter(name=endpoint.name)\
+            .filter(path=endpoint.path)
         response = OpenWhiskClient().delete_api(endpoint.name, 'guest')
+        # Recreate apis that should not be deleted
+        for other_endpoint in other_endpoints:
+            self.create_endpoint(fiware_service, fiware_service_path, other_endpoint.get_dict())
         return response
 
     def list_result(self, fiware_service, fiware_service_path):

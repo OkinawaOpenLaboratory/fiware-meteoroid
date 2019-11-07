@@ -31,6 +31,14 @@ class Endpoint(FIWAREBase):
     class Meta:
         unique_together = ('name', 'path', 'method', 'fiware_service', 'fiware_service_path')
 
+    def get_dict(self):
+        return {
+            'name': self.name,
+            'path': self.path,
+            'method': self.method,
+            'function': self.function.id
+        }
+
     def equals_faas_data(self, faas_data):
         function = Function.objects.filter(fiware_service=self.fiware_service,
                                            fiware_service_path=self.fiware_service_path).get(name=faas_data['action_name'])
