@@ -95,7 +95,7 @@ class OpenWhiskClient:
         data['apidoc']['action']['authkey'] = f'{self.user}:{self.password}'
         self.headers['Content-Type'] = 'application/json'
         response = requests.post(f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/createApi.http?' +
-                                 '{self.api_query_param}',
+                                 f'{self.api_query_param}',
                                  headers=self.headers,
                                  data=json.dumps(data),
                                  auth=(self.user, self.password),
