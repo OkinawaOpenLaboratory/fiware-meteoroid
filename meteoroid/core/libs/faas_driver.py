@@ -167,8 +167,12 @@ class OpenWhiskDriver(FaaSDriver):
         return response
 
     def update_function(self, function, fiware_service, fiware_service_path, data):
-        response = OpenWhiskClient().update_action('guest',
-                                                   self.__build_action_request_parameter('guest', data))
+        builded_data = self.__build_action_request_parameter('guest', data)
+        # Function name cannot be changed when updating.
+        builded_data['name'] = function.name
+        response = OpenWhiskClient().update_action(function.name,
+                                                   'guest',
+                                                   builded_data)
         response['code'] = data['code']
         response['language'] = data['language']
         response['binary'] = response['exec']['binary']

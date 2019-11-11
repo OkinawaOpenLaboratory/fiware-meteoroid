@@ -52,9 +52,8 @@ class OpenWhiskClient:
         self.exception_handler(response)
         return response.json()
 
-    def update_action(self, namespace, data):
+    def update_action(self, action_name, namespace, data):
         self.headers['Content-Type'] = 'application/json'
-        action_name = data['name']
         response = requests.put(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions/{action_name}?overwrite=true',
                                 headers=self.headers,
                                 data=json.dumps(data),

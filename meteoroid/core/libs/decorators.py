@@ -10,7 +10,7 @@ def fiware_headers(func):
 def extract_faas_function_param(func):
     def wrapper(*args, **kwargs):
         request = args[1]
-        name = request.data['name']
+        name = request.data.get('name')
         code = request.data.pop('code')
         language = request.data.pop('language')
         param = {
