@@ -80,10 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'meteoroid',
-        'USER': 'meteoroid',
-        'PASSWORD': 'meteoroid_password',
         'AUTH_SOURCE': 'admin',
-        'AUTH_MECHANISM': 'SCRAM-SHA-1',
         'HOST': 'mongo',
         'PORT': 27017,
     }

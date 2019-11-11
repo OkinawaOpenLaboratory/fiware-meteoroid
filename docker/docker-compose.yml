@@ -5,10 +5,6 @@ services:
     image: mongo:3.6
     command: --nojournal
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: meteoroid
-      MONGO_INITDB_ROOT_PASSWORD: meteoroid_password
-      MONGO_INITDB_DATABASE: meteoroid
 
   orion:
     image: fiware/orion
