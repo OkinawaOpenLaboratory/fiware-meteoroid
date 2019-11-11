@@ -46,7 +46,7 @@ class FunctionSerializer(serializers.ModelSerializer):
             if function['name'] == function_name:
                 if value_name in function:
                     return function[value_name]
-            return ''
+                return ''
 
 
 class EndpointSerializer(serializers.ModelSerializer):
