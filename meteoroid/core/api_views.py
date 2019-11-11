@@ -135,8 +135,10 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
     def create(self, request, fiware_service, fiware_service_path,
                endpoint_id, orion_subscription):
         endpoint = Endpoint.objects.get(id=endpoint_id)
+        print(dir(endpoint))
         host = os.environ.get('OPEN_WHISK_HOST', '')
-        url = f'https://{host}{endpoint.path}'
+        user_name = os.environ.get('OPEN_WHISK_USER', '')
+        url = f'https://{host}:9090/api/{user_name}/{endpoint.name}{endpoint.path}'
         orion_subscription['notification']['http'] = {'url': url}
         osc = OrionSubscriptionClient()
         location = osc.create_subscription(
