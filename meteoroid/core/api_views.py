@@ -67,6 +67,8 @@ class FunctionViewSet(viewsets.ModelViewSet):
         function = get_object_or_404(self.get_queryset(), pk=pk)
         faas_driver = FaaSDriver.get_faas_driver()
         faas_driver.delete_function(function, fiware_service, fiware_service_path)
+        for endpoint in function.endpoints.all():
+            faas_driver.delete_endpoint(endpoint, fiware_service, fiware_service_path)
         self.perform_destroy(function)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -23,7 +23,7 @@ class Endpoint(FIWAREBase):
     name = models.CharField(max_length=64)
     path = models.CharField(max_length=64)
     method = models.CharField(max_length=8)
-    function = models.ForeignKey(Function, on_delete=models.CASCADE)
+    function = models.ForeignKey(Function, on_delete=models.CASCADE, related_name='endpoints')
 
     def __str__(self):
         return f'{self.name}{self.path} {self.function.name} {self.method}'
