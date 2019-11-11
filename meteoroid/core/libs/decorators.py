@@ -13,15 +13,16 @@ def extract_faas_function_param(func):
         name = request.data['name']
         code = request.data.pop('code')
         language = request.data.pop('language')
-        parameters = []
-        if 'parameters' in request.data:
-            parameters = request.data.pop('parameters')
         param = {
             'name': name,
             'code': code,
             'language': language,
-            'parameters': parameters
         }
+        if 'parameters' in request.data:
+            param['parameters'] = request.data.pop('parameters')
+
+        if 'binary' in request.data:
+            param['binary'] = request.data.pop('binary')
 
         return func(*args, **kwargs, param=param)
     return wrapper
