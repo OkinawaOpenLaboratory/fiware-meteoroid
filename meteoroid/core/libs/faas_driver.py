@@ -163,7 +163,7 @@ class OpenWhiskDriver(FaaSDriver):
                                                    self.__build_action_request_parameter('guest', data))
         response['code'] = data['code']
         response['language'] = data['language']
-        response['binary'] = data['binary']
+        response['binary'] = response['exec']['binary']
         return response
 
     def update_function(self, function, fiware_service, fiware_service_path, data):
@@ -171,7 +171,7 @@ class OpenWhiskDriver(FaaSDriver):
                                                    self.__build_action_request_parameter('guest', data))
         response['code'] = data['code']
         response['language'] = data['language']
-        response['binary'] = data['binary']
+        response['binary'] = response['exec']['binary']
         return response
 
     def delete_function(self, function, fiware_service, fiware_service_path):

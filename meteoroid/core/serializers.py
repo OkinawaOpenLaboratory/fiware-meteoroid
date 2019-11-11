@@ -25,8 +25,8 @@ class FunctionSerializer(serializers.ModelSerializer):
         return self.get_value(obj.name, 'code')
 
     def get_binary(self, obj):
-        binary = self.get_value(obj.name, 'binary')
-        return binary if binary else False
+        binary = self.get_value(obj.name, 'binary', default=False)
+        return binary
 
     def get_language(self, obj):
         return self.get_value(obj.name, 'language')
@@ -37,16 +37,16 @@ class FunctionSerializer(serializers.ModelSerializer):
     def get_parameters(self, obj):
         return self.get_value(obj.name, 'parameters')
 
-    def get_value(self, function_name, value_name):
+    def get_value(self, function_name, value_name, default=''):
         if not isinstance(self.faas_function_data, list):
             if value_name in self.faas_function_data:
                 return self.faas_function_data[value_name]
-            return ''
+            return default
         for function in self.faas_function_data:
             if function['name'] == function_name:
                 if value_name in function:
                     return function[value_name]
-                return ''
+        return default
 
 
 class EndpointSerializer(serializers.ModelSerializer):
