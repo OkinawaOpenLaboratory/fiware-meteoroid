@@ -78,6 +78,8 @@ class OpenWhiskDriver(FaaSDriver):
         }
         if 'parameters' in data:
             request_parameter['parameters'] = data['parameters']
+        if 'binary' in data:
+            request_parameter['exec']['binary'] = data['binary']
         return request_parameter
 
     def __build_api_request_parameter(self, namespace, data):
@@ -136,6 +138,7 @@ class OpenWhiskDriver(FaaSDriver):
                 'namespace': f'{fiware_service}{fiware_service_path}',
                 'name': action['name'],
                 'language': language,
+                'binary': action['exec']['binary'],
                 'version': action['version']
             }
             function_list.append(function)
@@ -147,6 +150,7 @@ class OpenWhiskDriver(FaaSDriver):
             'namespace': f'{fiware_service}{fiware_service_path}',
             'name': action['name'],
             'language': action['exec']['kind'],
+            'binary': action['exec']['binary'],
             'version': action['version'],
             'parameters': action['parameters']
         }
@@ -159,6 +163,7 @@ class OpenWhiskDriver(FaaSDriver):
                                                    self.__build_action_request_parameter('guest', data))
         response['code'] = data['code']
         response['language'] = data['language']
+        response['binary'] = data['binary']
         return response
 
     def update_function(self, function, fiware_service, fiware_service_path, data):
@@ -166,6 +171,7 @@ class OpenWhiskDriver(FaaSDriver):
                                                    self.__build_action_request_parameter('guest', data))
         response['code'] = data['code']
         response['language'] = data['language']
+        response['binary'] = data['binary']
         return response
 
     def delete_function(self, function, fiware_service, fiware_service_path):

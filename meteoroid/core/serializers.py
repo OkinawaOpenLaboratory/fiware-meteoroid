@@ -7,6 +7,7 @@ from .models import Subscription
 class FunctionSerializer(serializers.ModelSerializer):
     code = serializers.SerializerMethodField()
     language = serializers.SerializerMethodField()
+    binary = serializers.SerializerMethodField()
     version = serializers.SerializerMethodField()
     parameters = serializers.SerializerMethodField()
     fiware_service = serializers.CharField(max_length=64, default='', allow_blank=True)
@@ -22,6 +23,10 @@ class FunctionSerializer(serializers.ModelSerializer):
 
     def get_code(self, obj):
         return self.get_value(obj.name, 'code')
+
+    def get_binary(self, obj):
+        binary = self.get_value(obj.name, 'binary')
+        return binary if binary else False
 
     def get_language(self, obj):
         return self.get_value(obj.name, 'language')
