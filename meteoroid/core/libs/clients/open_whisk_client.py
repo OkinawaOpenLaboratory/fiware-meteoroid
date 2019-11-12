@@ -1,7 +1,12 @@
-import requests
-import os
 import json
+import os
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 from rest_framework.exceptions import APIException
+
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 class OpenWhiskClientException(APIException):
