@@ -8,7 +8,7 @@ from .api_views import RetrieveResultView
 from .api_views import EndpointViewSet
 
 
-router = routers.SimpleRouter()
+router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'functions', FunctionViewSet, base_name='function')
 router.register(r'subscriptions', SubscriptionViewSet, base_name='subscription')
 router.register(r'endpoints', EndpointViewSet, base_name='endpoints')
