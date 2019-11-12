@@ -131,3 +131,11 @@ class OpenWhiskClient:
                                 verify=False)
         self.exception_handler(response)
         return response.json()
+
+    def retrieve_activation_logs(self, activation_id, namespace):
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/activations/{activation_id}/logs',
+                                headers=self.headers,
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response.json()

@@ -58,6 +58,10 @@ class FaaSDriver(metaclass=ABCMeta):
     def retrieve_result(self, result_id, fiware_service, fiware_service_path):
         raise NotImplementedError()
 
+    @abstractmethod
+    def retrieve_result_logs(self, result_id, fiware_service, fiware_service_path):
+        raise NotImplementedError()
+
 
 class OpenWhiskDriver(FaaSDriver):
     def escape_fiware_service_path(self, fiware_service_path):
@@ -221,3 +225,6 @@ class OpenWhiskDriver(FaaSDriver):
 
     def retrieve_result(self, result_id, fiware_service, fiware_service_path):
         return OpenWhiskClient().retrieve_activation(result_id, 'guest')
+
+    def retrieve_result_logs(self, result_id, fiware_service, fiware_service_path):
+        return OpenWhiskClient().retrieve_activation_logs(result_id, 'guest')

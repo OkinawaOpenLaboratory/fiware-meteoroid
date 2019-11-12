@@ -5,6 +5,7 @@ from .api_views import FunctionViewSet
 from .api_views import SubscriptionViewSet
 from .api_views import ListResultView
 from .api_views import RetrieveResultView
+from .api_views import RetrieveResultLogsView
 from .api_views import EndpointViewSet
 
 
@@ -17,4 +18,5 @@ urlpatterns = router.urls
 urlpatterns += [
     path(r'results', ListResultView.as_view()),
     path(r'results/<pk>', RetrieveResultView.as_view()),
+    path(r'results/<pk>/logs', RetrieveResultLogsView.as_view()),
 ]

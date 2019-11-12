@@ -200,3 +200,11 @@ class RetrieveResultView(APIView):
         faas_driver = FaaSDriver.get_faas_driver()
         result = faas_driver.retrieve_result(pk, fiware_service, fiware_service_path)
         return Response(result)
+
+
+class RetrieveResultLogsView(APIView):
+    @fiware_headers
+    def get(self, request, pk, fiware_service, fiware_service_path):
+        faas_driver = FaaSDriver.get_faas_driver()
+        logs = faas_driver.retrieve_result_logs(pk, fiware_service, fiware_service_path)
+        return Response(logs)
