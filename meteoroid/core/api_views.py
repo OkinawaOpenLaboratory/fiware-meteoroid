@@ -142,7 +142,7 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
         print(dir(endpoint))
         host = os.environ.get('OPEN_WHISK_HOST', '')
         user_name = os.environ.get('OPEN_WHISK_USER', '')
-        url = f'https://{host}:9090/api/{user_name}/{endpoint.name}{endpoint.path}'
+        url = f'http://{host}:9090/api/{user_name}/{endpoint.name}{endpoint.path}'
         orion_subscription['notification']['http'] = {'url': url}
         osc = OrionSubscriptionClient()
         location = osc.create_subscription(
