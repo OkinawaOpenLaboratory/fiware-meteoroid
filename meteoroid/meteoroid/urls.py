@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from core.api_urls import urlpatterns as api_urlpatterns
 from django.contrib import admin
 from django.urls import re_path, include
 from django.conf.urls import url
@@ -23,7 +24,9 @@ from rest_framework import permissions
 from rest_framework.schemas import coreapi
 from rest_framework.schemas import get_schema_view as get_core_api_schema_view
 from rest_framework.documentation import include_docs_urls
-from core.api_urls import urlpatterns as api_urlpatterns
+
+from .check_environment import check_environment_variables
+
 
 core_api_schema_view = get_core_api_schema_view(title='Meteoroid API',
                                                 generator_class=coreapi.SchemaGenerator)
@@ -49,3 +52,5 @@ urlpatterns = [
    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
    url(r'^docs/', include_docs_urls(title='Meteoroid', description=''))
 ]
+
+check_environment_variables()
