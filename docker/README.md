@@ -22,7 +22,22 @@ make quick-start
 
 ## Install Meteodoid, Orion, MongoDB
 
+Please edit DOCKER_HOST_IP for Meteoroid to access OpenWhisk.
+
 ```bash
 cd ${METEOROID_HOME}/docker
+vim docker-compose.yml
+```
+
+You should two changes Meteoroid Service and Migration Service.
+
+```yaml
+    environment:
+      - OPEN_WHISK_HOST=<DOCKER_HOST_IP>
+```
+
+Run containers.
+
+```
 docker-compose up -d
 ```

@@ -6,12 +6,16 @@ verify_ssl = true
 [dev-packages]
 autopep8 = "*"
 flake8 = "*"
+coreapi-cli = "*"
 
 [packages]
 django = "*"
 djangorestframework = "*"
 drf-yasg = "*"
 djongo = "*"
+requests = "*"
+coreapi = "*"
+pyyaml = "*"
 
 [requires]
 python_version = "3.8"
