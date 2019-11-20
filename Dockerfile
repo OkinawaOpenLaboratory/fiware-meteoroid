@@ -10,4 +10,4 @@ RUN pip install pipenv && pipenv install --system
 
 COPY . /opt/meteoroid/
 
-EXPOSE 8000
+EXPOSE 3000

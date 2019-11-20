@@ -5,6 +5,8 @@ services:
     image: mongo:3.6
     command: --nojournal
     restart: always
+    networks:
+      - proxynet
 
   orion:
     image: fiware/orion
@@ -13,6 +15,8 @@ services:
     ports:
       - "1026:1026"
     command: -dbhost mongo
+    networks:
+      - proxynet
 
   meteoroid:
     build: ../
@@ -23,15 +27,17 @@ services:
       - migration
       - orion
     ports:
-      - "8000:8000"
+      - "3000:3000"
     volumes:
       - ../meteoroid:/opt/meteoroid/meteoroid
     environment:
-      - OPEN_WHISK_HOST=<DOCKER_HOST_IP>
+      - OPEN_WHISK_HOST=apigateway
       - OPEN_WHISK_USER=23bc46b1-71f6-4ed5-8c54-816aa4f8c502
       - OPEN_WHISK_PASSWORD=123zO3xZCLrMN6v2BKK1dXYFpXlPkccOFqm12CdAsMgRU4VrNZ9lyGVCGuMDGIwP
       - FIWARE_ORION_HOST=orion:1026
-    command: python meteoroid/manage.py runserver 0.0.0.0:8000
+    command: python meteoroid/manage.py runserver 0.0.0.0:3000
+    networks:
+      - proxynet
 
   migration:
     build: ../
@@ -42,7 +48,14 @@ services:
     depends_on:
       - mongo
     environment:
-      - OPEN_WHISK_HOST=<DOCKER_HOST_IP>
+      - OPEN_WHISK_HOST=apigateway
       - OPEN_WHISK_USER=23bc46b1-71f6-4ed5-8c54-816aa4f8c502
       - OPEN_WHISK_PASSWORD=123zO3xZCLrMN6v2BKK1dXYFpXlPkccOFqm12CdAsMgRU4VrNZ9lyGVCGuMDGIwP
       - FIWARE_ORION_HOST=orion:1026
+    networks:
+      - proxynet
+
+networks:
+  proxynet:
+    external:
+      name: openwhisk_default
