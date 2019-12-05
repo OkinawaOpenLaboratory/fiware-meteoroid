@@ -62,6 +62,10 @@ pip install .
 #### Create a Python script
 
 Create a Python script to register as Function.
+```python
+def main(arg):
+    return {"test": "test"}
+```
 
 #### Create Function
 
