@@ -10,10 +10,22 @@ It provides a management interface specialized for FaaS and FIWARE.
 ### Download
 
 ```bash
-git clone https://github.com/OkinawaOpenLaboratory/fiware-meteoroid.git && cd fiware-meteoroid/
+git clone https://github.com/OkinawaOpenLaboratory/fiware-meteoroid.git --recursive && cd fiware-meteoroid/
 ```
 
 ### Install
+
+OpenWhisk must be running to build Meteoroid.
+
+##### Install OpenWhisk
+
+```bash
+cd fiware-meteoroid/docker/openwhisk-devtools/docker-compose
+quick-start
+
+```
+
+##### Install Meteoroid
 
 You can install Meteoroid in two ways:
 
@@ -35,15 +47,14 @@ python manage.py migrate
 
 ##### Run meteoroid
 
-```
+```bash
 python manage.py runserver
 ```
 
 #### Automatic installation using Docker
 
 ```bash
-cd docker
-
+cd fiware-meteoroid/docker/
 docker-compose up -d
 ```
 
