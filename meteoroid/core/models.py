@@ -56,4 +56,4 @@ class Subscription(FIWAREBase):
         return f'{self.fiware_service}{self.fiware_service_path} {self.endpoint_id}'
 
     class Meta:
-        unique_together = ('fiware_service', 'fiware_service_path')
+        unique_together = ('orion_subscription_id', 'fiware_service', 'fiware_service_path')

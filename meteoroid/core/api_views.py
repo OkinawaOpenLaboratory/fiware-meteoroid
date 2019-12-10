@@ -140,8 +140,9 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
                endpoint_id, orion_subscription):
         endpoint = Endpoint.objects.get(id=endpoint_id)
         host = os.environ.get('OPEN_WHISK_HOST', '')
+        port = os.environ.get('OPEN_WHISK_APIGATEWAY_PORT', 8080)
         user_name = os.environ.get('OPEN_WHISK_USER', '')
-        url = f'http://{host}:9090/api/{user_name}/{endpoint.name}{endpoint.path}'
+        url = f'http://{host}:{port}/api/{user_name}/{endpoint.name}{endpoint.path}'
         orion_subscription['notification']['http'] = {'url': url}
         osc = OrionSubscriptionClient()
         location = osc.create_subscription(
