@@ -1,5 +1,8 @@
 # Meteoroid
 
+![PyPI](https://img.shields.io/pypi/v/meteoroid-cli)
+![GitHub](https://img.shields.io/github/license/OkinawaOpenLaboratory/fiware-meteoroid?color=blue)
+
 ## Overview
 
 Meteoroid realizes integrating Function as a Service(FaaS) capabilities in FIWARE.
@@ -17,7 +20,7 @@ git clone https://github.com/OkinawaOpenLaboratory/fiware-meteoroid.git --recurs
 
 OpenWhisk must be running to build Meteoroid.
 
-##### Install OpenWhisk
+#### Install OpenWhisk
 
 ```bash
 cd fiware-meteoroid/docker/openwhisk-devtools/docker-compose
@@ -25,48 +28,66 @@ quick-start
 
 ```
 
-##### Install Meteoroid
+#### Install [Meteoroid CLI](https://github.com/OkinawaOpenLaboratory/fiware-meteoroid-cli)
+
+```bash
+pip install meteoroid-cli
+```
+
+#### Install Meteoroid
 
 You can install Meteoroid in two ways:
 
-- Manual installation using pipenv and Django manage.py
-- Automatic installation using Docker (Docker Compose)
+- [Automatic installation](https://github.com/OkinawaOpenLaboratory/fiware-meteoroid/tree/master#automatic-installation) using Docker (Docker Compose)
+- [Manual installation](https://github.com/OkinawaOpenLaboratory/fiware-meteoroid/tree/master#manual-installation) using pipenv and Django manage.py
 
-#### Manual installation using pipenv and Django manage.py
+---
 
-```
-pipenv shell
-pipenv install
-```
-
-##### Migrate database
-
-```
-python manage.py migrate
-```
-
-##### Run meteoroid
-
-```bash
-python manage.py runserver
-```
-
-#### Automatic installation using Docker
+### Automatic installation
+using Docker (Docker Compose)
 
 ```bash
 cd fiware-meteoroid/docker/
 docker-compose up -d
 ```
 
-#### Install Meteoroid CLI
+#### Export METEOROID_SCHEMA_ENDPOINT (Option) for CLI
+Defualt endpoint (http://localhost:3000/schema/?format=corejson)
 
-```bash
-git clone https://github.com/OkinawaOpenLaboratory/fiware-meteoroid-cli.git && cd fiware-meteoroid-cli/
+```
+export METEOROID_SCHEMA_ENDPOINT=http://host:port/schema/?format=corejson
 ```
 
-```bash
-pip install .
+---
+
+### Manual installation
+using pipenv and Django manage.py
+
 ```
+pipenv shell
+pipenv install
+```
+
+#### Migrate database
+
+```
+python manage.py migrate
+```
+
+#### Run meteoroid
+
+```bash
+python manage.py runserver
+```
+
+#### Export METEOROID_SCHEMA_ENDPOINT (Option) for CLI
+Defualt endpoint (http://localhost:3000/schema/?format=corejson)
+
+```
+export METEOROID_SCHEMA_ENDPOINT=http://host:port/schema/?format=corejson
+```
+
+---
 
 ### Usage
 
