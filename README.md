@@ -167,3 +167,10 @@ If you can get the execution result of Function1, it is successful.
 ```bash
 meteoroid result list
 ```
+
+## Support language
+
+Currently, supported languages depend on [OpenWhisk](https://openwhisk.apache.org/documentation.html#actions-creating-and-invoking).
+
+* [Python3](./docs/function/python.md)
+* [Java(JDK8)](./docs/function/java.md)

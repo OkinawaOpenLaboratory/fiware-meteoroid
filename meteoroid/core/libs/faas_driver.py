@@ -80,6 +80,8 @@ class OpenWhiskDriver(FaaSDriver):
             'annotations': [{'key': 'web-export',
                              'value': True}]
         }
+        if 'main' in data:
+            request_parameter['exec']['main'] = data['main']
         if 'parameters' in data:
             request_parameter['parameters'] = data['parameters']
         if 'binary' in data:

@@ -18,6 +18,9 @@ def extract_faas_function_param(func):
             'code': code,
             'language': language,
         }
+        if 'main' in request.data:
+            param['main'] = request.data.pop('main')
+
         if 'parameters' in request.data:
             param['parameters'] = request.data.pop('parameters')
 
