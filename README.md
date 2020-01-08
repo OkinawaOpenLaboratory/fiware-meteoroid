@@ -24,7 +24,7 @@ OpenWhisk must be running to build Meteoroid.
 
 ```bash
 cd fiware-meteoroid/docker/openwhisk-devtools/docker-compose
-quick-start
+make quick-start
 
 ```
 
