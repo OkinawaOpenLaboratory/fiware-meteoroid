@@ -139,3 +139,73 @@ class OpenWhiskClient:
                                 verify=False)
         self.exception_handler(response)
         return response.json()
+
+    def list_trigger(self, namespace):
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/triggers',
+                                headers=self.headers,
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response
+
+    def create_trigger(self, namespace, data):
+        self.headers['Content-Type'] = 'application/json'
+        trigger_name = data.get('name')
+        response = requests.put(f'{self.endpoint}/api/v1/namespaces/{namespace}/triggers/{trigger_name}',
+                                headers=self.headers,
+                                data=json.dumps(data),
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response
+
+    def retrieve_trigger(self, trigger_name, namespace):
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/triggers/{trigger_name}',
+                                headers=self.headers,
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response
+
+    def delete_trigger(self, trigger_name, namespace):
+        response = requests.delete(f'{self.endpoint}/api/v1/namespaces/{namespace}/triggers/{trigger_name}',
+                                   headers=self.headers,
+                                   auth=(self.user, self.password),
+                                   verify=False)
+        self.exception_handler(response)
+        return response
+
+    def list_rule(self, namespace):
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/rules',
+                                headers=self.headers,
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response
+
+    def create_rule(self, namespace, data):
+        self.headers['Content-Type'] = 'application/json'
+        rule_name = data.get('name')
+        response = requests.put(f'{self.endpoint}/api/v1/namespaces/{namespace}/rules/{rule_name}',
+                                headers=self.headers,
+                                data=json.dumps(data),
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response
+
+    def retrieve_rule(self, rule_name, namespace):
+        response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/rules/{rule_name}',
+                                headers=self.headers,
+                                auth=(self.user, self.password),
+                                verify=False)
+        self.exception_handler(response)
+        return response
+
+    def delete_rule(self, rule_name, namespace):
+        response = requests.delete(f'{self.endpoint}/api/v1/namespaces/{namespace}/rules/{rule_name}',
+                                   headers=self.headers,
+                                   auth=(self.user, self.password),
+                                   verify=False)
+        self.exception_handler(response)
+        return response
