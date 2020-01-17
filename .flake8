@@ -1,4 +1,4 @@
 [flake8]
 exclude = .git, .tox, .venv, .eggs, build, dist, docs, meteoroid/core/migrations
 max-complexity = 10
-max-line-length = 120
+max-line-length = 100
