@@ -3,7 +3,8 @@ def fiware_headers(func):
         self = args[0]
         fiware_service = self.request.META.get('HTTP_FIWARE_SERVICE', '')
         fiware_service_path = self.request.META.get('HTTP_FIWARE_SERVICEPATH', '/')
-        return func(*args, **kwargs, fiware_service=fiware_service, fiware_service_path=fiware_service_path)
+        return func(*args, **kwargs, fiware_service=fiware_service,
+                    fiware_service_path=fiware_service_path)
     return wrapper
 
 

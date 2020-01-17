@@ -166,7 +166,8 @@ class OpenWhiskDriver(FaaSDriver):
 
     def create_function(self, fiware_service, fiware_service_path, data):
         response = OpenWhiskClient().create_action('guest',
-                                                   self.__build_action_request_parameter('guest', data))
+                                                   self.__build_action_request_parameter('guest',
+                                                                                         data))
         response['code'] = data['code']
         response['language'] = data['language']
         response['binary'] = response['exec']['binary']
@@ -201,8 +202,10 @@ class OpenWhiskDriver(FaaSDriver):
     def create_endpoint(self, fiware_service, fiware_service_path, data):
         api = OpenWhiskClient().create_api('guest',
                                            self.__build_api_request_parameter('guest', data))
-        function = Function.objects.filter(fiware_service=fiware_service,
-                                           fiware_service_path=fiware_service_path).get(pk=data['function'])
+        function = Function.objects.filter(
+            fiware_service=fiware_service,
+            fiware_service_path=fiware_service_path).get(
+                pk=data['function'])
         for endpoint_data in self.__build_endpoint_list_response(api):
             if endpoint_data['name'] == data['name'] and\
                     endpoint_data['path'] == data['path'] and\

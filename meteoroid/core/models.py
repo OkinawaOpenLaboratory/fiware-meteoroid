@@ -40,8 +40,10 @@ class Endpoint(FIWAREBase):
         }
 
     def equals_faas_data(self, faas_data):
-        function = Function.objects.filter(fiware_service=self.fiware_service,
-                                           fiware_service_path=self.fiware_service_path).get(name=faas_data['action_name'])
+        function = Function.objects.filter(
+            fiware_service=self.fiware_service,
+            fiware_service_path=self.fiware_service_path).get(
+                name=faas_data['action_name'])
         return self.name == faas_data['name'] and\
             self.path == faas_data['path'] and\
             self.method.lower() == faas_data['method'].lower() and\
