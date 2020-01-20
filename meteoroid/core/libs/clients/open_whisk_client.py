@@ -1,12 +1,13 @@
 import json
+import logging
 import os
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
 from rest_framework.exceptions import APIException
 
-
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+logger = logging.getLogger(__name__)
 
 
 class OpenWhiskClientException(APIException):
@@ -26,8 +27,11 @@ class OpenWhiskClient:
 
     def exception_handler(self, response):
         if response.status_code != 200:
+            logger.error(f'status code: {response.status_code}, detail: {response.text}')
             raise OpenWhiskClientException(detail=response.text,
                                            code=response.status_code)
+        else:
+            logger.info(f'status code: {response.status_code}, detail: {response.text}')
 
     def list_action(self, namespace):
         response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/actions',
