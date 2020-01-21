@@ -1,7 +1,11 @@
-import os
 from abc import ABCMeta, abstractmethod
+import logging
+import os
 from .clients.open_whisk_client import OpenWhiskClient
 from ..models import Function, Endpoint
+
+
+logger = logging.getLogger(__name__)
 
 
 class FaaSDriver(metaclass=ABCMeta):
@@ -12,6 +16,9 @@ class FaaSDriver(metaclass=ABCMeta):
         if not cls.__instance:
             if faas_name == 'open_whisk':
                 cls.__instance = OpenWhiskDriver()
+            else:
+                logger.error(f'Does not support {faas_name}')
+                raise Exception(f'Does not support {faas_name}')
         return cls.__instance
 
     @abstractmethod
