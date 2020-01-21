@@ -8,11 +8,12 @@ from rest_framework.views import APIView
 
 from .libs.clients.orion_subscription_client import OrionSubscriptionClient
 from .libs.decorators import (extract_faas_function_param,
+                              extract_faas_schedule_param,
                               extract_faas_subscription_param, fiware_headers)
 from .libs.faas_driver import FaaSDriver
-from .models import Endpoint, Function, Subscription
+from .models import Endpoint, Function, Schedule, Subscription
 from .serializers import (EndpointSerializer, FunctionSerializer,
-                          SubscriptionSerializer)
+                          ScheduleSerializer, SubscriptionSerializer)
 
 
 class FunctionViewSet(viewsets.ModelViewSet):
@@ -222,3 +223,58 @@ class RetrieveResultLogsView(APIView):
         faas_driver = FaaSDriver.get_faas_driver()
         logs = faas_driver.retrieve_result_logs(pk, fiware_service, fiware_service_path)
         return Response(logs)
+
+
+class ScheduleViewSet(viewsets.ModelViewSet):
+    serializer_class = ScheduleSerializer
+    http_method_names = ['get', 'post', 'delete']
+
+    @fiware_headers
+    def list(self, request, fiware_service, fiware_service_path):
+        serializer = self.serializer_class(self.get_queryset(), many=True)
+        return Response(serializer.data)
+
+    @fiware_headers
+    @extract_faas_schedule_param
+    def create(self, request, fiware_service, fiware_service_path,
+               function, name, param):
+        faas_driver = FaaSDriver.get_faas_driver()
+        faas_schedule_data = faas_driver.create_schedule(fiware_service, fiware_service_path, param)
+        data = request.data.copy()
+        data['fiware_service'] = fiware_service
+        data['fiware_service_path'] = fiware_service_path
+        data['trigger_name'] = faas_schedule_data['trigger_name']
+        data['rule_name'] = faas_schedule_data['rule_name']
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid()
+        serializer.save()
+        resp_data = faas_schedule_data
+        resp_data.update(serializer.data)
+        del (resp_data['trigger_name'], resp_data['rule_name'], resp_data['fiware_service'],
+             resp_data['fiware_service_path'])
+        return Response(resp_data)
+
+    @fiware_headers
+    def retrieve(self, request, pk=None, fiware_service='',
+                 fiware_service_path='/'):
+        schedule = get_object_or_404(self.get_queryset(), pk=pk)
+        faas_driver = FaaSDriver.get_faas_driver()
+        schedule_data = faas_driver.retrieve_schedule(schedule,
+                                                      fiware_service,
+                                                      fiware_service_path)
+        return Response(schedule_data)
+
+    @fiware_headers
+    def destroy(self, request, pk=None, fiware_service='',
+                fiware_service_path='/'):
+        schedule = get_object_or_404(self.get_queryset(), pk=pk)
+        faas_driver = FaaSDriver.get_faas_driver()
+        faas_driver.delete_schedule(schedule, fiware_service, fiware_service_path)
+        self.perform_destroy(schedule)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @fiware_headers
+    def get_queryset(self, fiware_service, fiware_service_path):
+        return Schedule.objects.filter(
+                   fiware_service=fiware_service,
+                   fiware_service_path=fiware_service_path)

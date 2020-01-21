@@ -69,6 +69,18 @@ class FaaSDriver(metaclass=ABCMeta):
     def retrieve_result_logs(self, result_id, fiware_service, fiware_service_path):
         raise NotImplementedError()
 
+    @abstractmethod
+    def retrieve_schedule(self, schedule, fiware_service, fiware_service_path):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def create_schedule(self, fiware_service, fiware_service_path, data):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def delete_schedule(self, schedule, fiware_service, fiware_service_path):
+        raise NotImplementedError()
+
 
 class OpenWhiskDriver(FaaSDriver):
     def escape_fiware_service_path(self, fiware_service_path):
@@ -240,3 +252,107 @@ class OpenWhiskDriver(FaaSDriver):
 
     def retrieve_result_logs(self, result_id, fiware_service, fiware_service_path):
         return OpenWhiskClient().retrieve_activation_logs(result_id, 'guest')
+
+    def __build_trigger_request_parameter(self, data):
+        trigger_name = data['name'] + '-trigger'
+        request_parameter = {
+            'name': trigger_name,
+            'annotations': [{
+                'key': 'feed', 'value': '/whisk.system/alarms/alarm'
+            }]
+        }
+        return request_parameter
+
+    def __build_invoke_alarm_action_request_parameter(self, data, lifecycle_event):
+        username = os.environ.get('OPEN_WHISK_USER', '')
+        password = os.environ.get('OPEN_WHISK_PASSWORD', '')
+        trigger_name = data['name'] + '-trigger'
+        invoke_data = {}
+
+        if lifecycle_event == 'CREATE':
+            schedule = data['schedule']
+            invoke_data = {
+                'authKey': f'{username}:{password}',
+                'cron': schedule,
+                'lifecycleEvent': lifecycle_event,
+                'triggerName': f'/_/{trigger_name}'
+            }
+            if data.get('startDate'):
+                invoke_data['startDate'] = data['startDate']
+            if data.get('stopDate'):
+                invoke_data['stopDate'] = data['stopDate']
+            if data.get('trigger_payload'):
+                invoke_data['trigger_payload'] = data['trigger_payload']
+        elif lifecycle_event == 'READ' or lifecycle_event == 'DELETE':
+            invoke_data = {
+                'authKey': f'{username}:{password}',
+                'lifecycleEvent': lifecycle_event,
+                'triggerName': trigger_name
+            }
+        return invoke_data
+
+    def __build_create_rule_request_patameter(self, action_name, data):
+        trigger_name = data['name'] + '-trigger'
+        rule_name = data['name'] + '-rule'
+        rule_data = {
+            'name': rule_name,
+            'status': data.get('status', ''),
+            'trigger': f'/_/{trigger_name}',
+            'action': f'/_/{action_name}'
+        }
+        return rule_data
+
+    def create_schedule(self, fiware_service, fiware_service_path, data):
+        function = Function.objects.filter(
+                       fiware_service=fiware_service,
+                       fiware_service_path=fiware_service_path).get(pk=data['function'])
+
+        schedule = data['schedule']
+
+        trigger_data = self.__build_trigger_request_parameter(data)
+        OpenWhiskClient().create_trigger('guest', trigger_data)
+
+        invoke_data = self.__build_invoke_alarm_action_request_parameter(data, 'CREATE')
+        OpenWhiskClient().invoke_action_with_package(
+            'alarms', 'alarm', 'whisk.system', invoke_data)
+
+        rule_data = self.__build_create_rule_request_patameter(function.name, data)
+        OpenWhiskClient().create_rule('guest', rule_data)
+
+        schedule = {
+            'trigger_name': trigger_data['name'],
+            'rule_name': rule_data['name'],
+            'name': data['name'],
+            'schedule': data['schedule'],
+            'function': function.id,
+            'trigger_payload': invoke_data.get('trigger_payload', ''),
+            'startDate': invoke_data.get('startDate', ''),
+            'stopDate': invoke_data.get('stopDate', '')
+        }
+        return schedule
+
+    def retrieve_schedule(self, schedule, fiware_service, fiware_service_path):
+        invoke_data = self.__build_invoke_alarm_action_request_parameter(
+                          {'name': schedule.name}, 'READ')
+        invoked = OpenWhiskClient().invoke_action_with_package(
+                      'alarms', 'alarm', 'whisk.system', invoke_data)
+        config = invoked.json()['response']['result']['config']
+        OpenWhiskClient().retrieve_rule(schedule.rule_name, 'guest')
+        schedule_details = {
+            'schedule': config['cron'],
+            'function': schedule.function.id,
+            'id': schedule.id,
+            'name': schedule.name,
+            'startDate': config.get('startDate', ''),
+            'stopDate': config.get('stopDate', ''),
+            'trigger_payload': config.get('payload', '')
+        }
+        return schedule_details
+
+    def delete_schedule(self, schedule, fiware_service, fiware_service_path):
+        invoke_data = self.__build_invoke_alarm_action_request_parameter(
+                          {'name': schedule.name}, 'DELETE')
+        OpenWhiskClient().invoke_action_with_package('alarms', 'alarm', 'whisk.system', invoke_data)
+        OpenWhiskClient().delete_rule(schedule.rule_name, 'guest')
+        response = OpenWhiskClient().delete_trigger(schedule.trigger_name, 'guest')
+        return response
