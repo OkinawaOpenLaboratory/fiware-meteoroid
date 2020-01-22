@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from .models import Function
-from .models import Endpoint
-from .models import Subscription
+
+from .models import Endpoint, Function, Subscription
 
 
 class FunctionSerializer(serializers.ModelSerializer):

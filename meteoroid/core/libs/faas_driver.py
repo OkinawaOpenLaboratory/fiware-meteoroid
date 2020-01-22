@@ -1,9 +1,9 @@
-from abc import ABCMeta, abstractmethod
 import logging
 import os
-from .clients.open_whisk_client import OpenWhiskClient
-from ..models import Function, Endpoint
+from abc import ABCMeta, abstractmethod
 
+from .clients.open_whisk_client import OpenWhiskClient
+from ..models import Endpoint, Function
 
 logger = logging.getLogger(__name__)
 

@@ -1,13 +1,10 @@
 from django.urls import path
+
 from rest_framework import routers
 
-from .api_views import FunctionViewSet
-from .api_views import SubscriptionViewSet
-from .api_views import ListResultView
-from .api_views import RetrieveResultView
-from .api_views import RetrieveResultLogsView
-from .api_views import EndpointViewSet
-
+from .api_views import (EndpointViewSet, FunctionViewSet, ListResultView,
+                        RetrieveResultLogsView, RetrieveResultView,
+                        SubscriptionViewSet)
 
 router = routers.SimpleRouter(trailing_slash=False)
 router.register(r'functions', FunctionViewSet, base_name='function')

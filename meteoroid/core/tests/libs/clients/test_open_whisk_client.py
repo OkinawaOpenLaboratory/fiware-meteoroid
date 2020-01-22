@@ -1,9 +1,8 @@
 import unittest
-from unittest.mock import Mock
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
-from ....libs.clients.open_whisk_client import OpenWhiskClient
-from ....libs.clients.open_whisk_client import OpenWhiskClientException
+from ....libs.clients.open_whisk_client import (OpenWhiskClient,
+                                                OpenWhiskClientException)
 
 
 class OpenWhiskClientTestCase(unittest.TestCase):
