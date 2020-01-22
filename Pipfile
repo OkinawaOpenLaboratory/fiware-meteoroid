@@ -9,6 +9,7 @@ flake8 = "*"
 coreapi-cli = "*"
 flake8-import-order = "*"
 flake8-quotes = "*"
+pep8-naming = "*"
 
 [packages]
 django = "*"

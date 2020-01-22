@@ -72,9 +72,9 @@ class FaaSDriver(metaclass=ABCMeta):
 
 class OpenWhiskDriver(FaaSDriver):
     def escape_fiware_service_path(self, fiware_service_path):
-        ESCAPE_TARGET_STR = '/'
-        ESCAPE_NEW_STR = '_'
-        return fiware_service_path.replace(ESCAPE_TARGET_STR, ESCAPE_NEW_STR)
+        escape_target_str = '/'
+        escape_new_str = '_'
+        return fiware_service_path.replace(escape_target_str, escape_new_str)
 
     def __build_action_request_parameter(self, namespace, data):
         request_parameter = {
