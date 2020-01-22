@@ -51,7 +51,7 @@ cd fiware-meteoroid/docker/
 docker-compose up -d
 ```
 
-#### Export METEOROID_SCHEMA_ENDPOINT (Option) for CLI
+#### Export METEOROID_SCHEMA_ENDPOINT for CLI (Option)
 Defualt endpoint (http://localhost:3000/schema/?format=corejson)
 
 ```
@@ -174,3 +174,11 @@ Currently, supported languages depend on [OpenWhisk](https://openwhisk.apache.or
 
 * [Python3](./docs/function/python.md)
 * [Java(JDK8)](./docs/function/java.md)
+
+
+## Contribution guidelines
+
+You should read this if you plan to contribute with code to Meteoroid
+
+* [Contribution guidelines](./docs/manuals/contribution_guidelines.md)
+
