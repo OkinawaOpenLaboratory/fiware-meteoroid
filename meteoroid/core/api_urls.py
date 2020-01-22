@@ -7,9 +7,9 @@ from .api_views import (EndpointViewSet, FunctionViewSet, ListResultView,
                         SubscriptionViewSet)
 
 router = routers.SimpleRouter(trailing_slash=False)
-router.register(r'functions', FunctionViewSet, base_name='function')
-router.register(r'subscriptions', SubscriptionViewSet, base_name='subscription')
-router.register(r'endpoints', EndpointViewSet, base_name='endpoints')
+router.register(r'functions', FunctionViewSet, basename='function')
+router.register(r'subscriptions', SubscriptionViewSet, basename='subscription')
+router.register(r'endpoints', EndpointViewSet, basename='endpoints')
 
 urlpatterns = router.urls
 urlpatterns += [
