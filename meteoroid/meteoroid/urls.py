@@ -35,10 +35,10 @@ core_api_schema_view = get_core_api_schema_view(title='Meteoroid API',
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Meteoroid API",
+        title='Meteoroid API',
         default_version='v1',
-        description="Meteoroid API",
-        license=openapi.License(name="GNU Affero General Public License v3.0"),
+        description='Meteoroid API',
+        license=openapi.License(name='GNU Affero General Public License v3.0'),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
