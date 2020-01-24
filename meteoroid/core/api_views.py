@@ -1,8 +1,10 @@
+import logging
 import os
 
 from django.shortcuts import get_object_or_404
 
 from rest_framework import status, viewsets
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -13,6 +15,8 @@ from .libs.faas_driver import FaaSDriver
 from .models import Endpoint, Function, Subscription
 from .serializers import (EndpointSerializer, FunctionSerializer,
                           SubscriptionSerializer)
+
+logger = logging.getLogger(__name__)
 
 
 class FunctionViewSet(viewsets.ModelViewSet):
@@ -74,7 +78,10 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def destroy(self, request, pk=None, fiware_service='', fiware_service_path='/'):
         function = get_object_or_404(self.get_queryset(), pk=pk)
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_driver.delete_function(function, fiware_service, fiware_service_path)
+        try:
+            faas_driver.delete_function(function, fiware_service, fiware_service_path)
+        except APIException:
+            logger.error('Failed to delete a function as a resource of OpenWhisk')
         for endpoint in function.endpoints.all():
             faas_driver.delete_endpoint(endpoint, fiware_service, fiware_service_path)
         self.perform_destroy(function)
@@ -126,7 +133,10 @@ class EndpointViewSet(viewsets.ModelViewSet):
     def destroy(self, request, pk=None, fiware_service='', fiware_service_path='/'):
         endpoint = get_object_or_404(self.get_queryset(), pk=pk)
         faas_driver = FaaSDriver.get_faas_driver()
-        faas_driver.delete_endpoint(endpoint, fiware_service, fiware_service_path)
+        try:
+            faas_driver.delete_endpoint(endpoint, fiware_service, fiware_service_path)
+        except APIException:
+            logger.error('Failed to delete a endpoint as a resource of OpenWhisk')
         self.perform_destroy(endpoint)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -186,10 +196,13 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
                 fiware_service_path='/'):
         subscription = get_object_or_404(self.get_queryset(), pk=pk)
         osc = OrionSubscriptionClient()
-        osc.delete_subscription(
-            subscription.orion_subscription_id,
-            fiware_service,
-            fiware_service_path)
+        try:
+            osc.delete_subscription(
+                subscription.orion_subscription_id,
+                fiware_service,
+                fiware_service_path)
+        except APIException:
+            logger.error('Failed to delete a orion subscription as a resource of OpenWhisk')
         self.perform_destroy(subscription)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
