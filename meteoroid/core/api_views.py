@@ -82,8 +82,11 @@ class FunctionViewSet(viewsets.ModelViewSet):
             faas_driver.delete_function(function, fiware_service, fiware_service_path)
         except APIException:
             logger.error('Failed to delete a function as a resource of OpenWhisk')
-        for endpoint in function.endpoints.all():
-            faas_driver.delete_endpoint(endpoint, fiware_service, fiware_service_path)
+        try:
+            for endpoint in function.endpoints.all():
+                faas_driver.delete_endpoint(endpoint, fiware_service, fiware_service_path)
+        except APIException:
+            logger.error('Failed to delete endpoint related to function as a resource of OpenWhisk')
         self.perform_destroy(function)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -224,8 +224,7 @@ class OpenWhiskDriver(FaaSDriver):
         other_endpoints = Endpoint.objects.exclude(id=endpoint.id)\
             .filter(fiware_service=endpoint.fiware_service)\
             .filter(fiware_service_path=endpoint.fiware_service_path)\
-            .filter(name=endpoint.name)\
-            .filter(path=endpoint.path)
+            .filter(name=endpoint.name)
         response = OpenWhiskClient().delete_api(endpoint.name, 'guest')
         # Recreate apis that should not be deleted
         for other_endpoint in other_endpoints:
