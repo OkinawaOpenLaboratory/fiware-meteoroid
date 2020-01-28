@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Endpoint, Function, Subscription
+from .models import Endpoint, Function, Schedule, Subscription
 
 
 class FunctionSerializer(serializers.ModelSerializer):
@@ -85,4 +85,19 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
+        fields = '__all__'
+
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    fiware_service = serializers.CharField(max_length=64, default='', allow_blank=True)
+    fiware_service_path = serializers.CharField(max_length=64, default='/')
+    trigger_name = serializers.CharField(max_length=64)
+    rule_name = serializers.CharField(max_length=64)
+    function = serializers.PrimaryKeyRelatedField(queryset=Function.objects.filter())
+
+    def __init__(self, *args, **kwargs):
+        super(ScheduleSerializer, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Schedule
         fields = '__all__'

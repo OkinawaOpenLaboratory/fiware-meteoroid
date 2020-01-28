@@ -25,6 +25,22 @@ class OpenWhiskClientTestCase(unittest.TestCase):
             )
         return mock_resp
 
+    @patch('core.libs.clients.open_whisk_client.requests.post')
+    def test_invoke_action_with_package_200(self, mock):
+        mock_resp = self._mock_response(status_code=200)
+        mock.return_value = mock_resp
+
+        resp = self.client.invoke_action_with_package('alarms', 'alarm', 'whisk.system', {})
+        self.assertEqual(resp.status_code, 200)
+
+    @patch('core.libs.clients.open_whisk_client.requests.post')
+    def test_invoke_action_with_package_500(self, mock):
+        mock_resp = self._mock_response(status_code=500)
+        mock.return_value = mock_resp
+
+        with self.assertRaises(OpenWhiskClientException):
+            self.client.invoke_action_with_package('alarms', 'alarm', 'whisk.system', {})
+
     @patch('core.libs.clients.open_whisk_client.requests.get')
     def test_list_trigger_200(self, mock):
         mock_resp = self._mock_response(status_code=200)

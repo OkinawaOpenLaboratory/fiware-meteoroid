@@ -59,3 +59,13 @@ class Subscription(FIWAREBase):
 
     class Meta:
         unique_together = ('orion_subscription_id', 'fiware_service', 'fiware_service_path')
+
+
+class Schedule(FIWAREBase):
+    trigger_name = models.CharField(max_length=64)
+    rule_name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64)
+    function = models.ForeignKey(Function, on_delete=models.CASCADE, related_name='functions')
+
+    class Meta:
+        unique_together = ('name', 'fiware_service', 'fiware_service_path')

@@ -94,6 +94,19 @@ class OpenWhiskClient:
         self.exception_handler(response)
         return response.json()
 
+    def invoke_action_with_package(self, package_name, action_name, namespace, data):
+        self.headers['Content-Type'] = 'application/json'
+        params = {'blocking': 'true', 'result': 'false'}
+        response = requests.post(
+            f'{self.endpoint}/api/v1/namespaces/{namespace}/actions/{package_name}/{action_name}',
+            headers=self.headers,
+            data=json.dumps(data),
+            params=params,
+            auth=(self.user, self.password),
+            verify=False)
+        self.exception_handler(response)
+        return response
+
     def list_api(self, namespace):
         response = requests.get(
             f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/getApi.http?{self.api_query_param}',

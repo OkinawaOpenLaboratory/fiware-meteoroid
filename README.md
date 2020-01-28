@@ -168,6 +168,35 @@ If you can get the execution result of Function1, it is successful.
 meteoroid result list
 ```
 
+#### Create Schedule
+
+Schedule is a function that executes a function periodically.
+Schedule can be defined by Cron-like description.
+
+Create a schedule named schedule1.
+
+```bash
+curl -X POST http://localhost:3000/api/v1/schedules \
+    -H 'Content-Type: application/json' \
+    -d '{"function": FUNCTION_ID, "name": "schedule1", "schedule": "*/20 * * * * *"}'
+```
+
+#### List Schedules
+
+List schedules.
+
+```bash
+curl http://localhost:3000/api/v1/schedules
+```
+
+#### Delete Schedule
+
+Delete schedules.
+
+```bash
+curl -X DELETE http://localhost:3000/api/v1/schedules/SCHEDULE_ID
+```
+
 ## Support language
 
 Currently, supported languages depend on [OpenWhisk](https://openwhisk.apache.org/documentation.html#actions-creating-and-invoking).

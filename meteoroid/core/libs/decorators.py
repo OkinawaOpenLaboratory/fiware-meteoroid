@@ -56,3 +56,28 @@ def extract_faas_subscription_param(func):
         return func(*args, **kwargs, endpoint_id=endpoint_id,
                     orion_subscription=orion_subscription)
     return wrapper
+
+
+def extract_faas_schedule_param(func):
+    def wrapper(*args, **kwargs):
+        self = args[0]
+        function = self.request.data['function']
+        name = self.request.data['name']
+        schedule = self.request.data['schedule']
+        param = {
+            'function': function,
+            'name': name,
+            'schedule': schedule
+        }
+        if 'trigger_payload' in self.request.data:
+            param['trigger_payload'] = self.request.data['trigger_payload']
+
+        if 'startDate' in self.request.data:
+            param['startDate'] = self.request.data['startDate']
+
+        if 'stopDate' in self.request.data:
+            param['stopDate'] = self.request.data['stopDate']
+
+        return func(*args, **kwargs, function=function,
+                    name=name, param=param)
+    return wrapper
