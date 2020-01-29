@@ -101,3 +101,22 @@ class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         fields = '__all__'
+
+
+class ResultSerializer(serializers.Serializer):
+    activation_id = serializers.CharField(max_length=32)
+    name = serializers.CharField(max_length=64)
+    namespace = serializers.CharField(max_length=64)
+    annotations = serializers.JSONField()
+    duration = serializers.IntegerField(default=0)
+    start = serializers.CharField(default='', allow_blank=True)
+    end = serializers.CharField(default='', allow_blank=True)
+    publish = serializers.BooleanField()
+    status_code = serializers.IntegerField(default=0)
+    version = serializers.CharField()
+    logs = serializers.JSONField(required=False)
+    response = serializers.JSONField(required=False)
+
+
+class ResultLogsSerializer(serializers.Serializer):
+    logs = serializers.JSONField()
