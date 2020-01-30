@@ -1,3 +1,5 @@
 [flake8]
-exclude = .git, .tox, .venv, .eggs, build, dist, docs
-max-line-length = 120
+exclude = .git, .tox, .venv, .eggs, build, dist, docs, meteoroid/core/migrations, meteoroid/manage.py
+max-complexity = 10
+max-line-length = 100
+application-import-names = core

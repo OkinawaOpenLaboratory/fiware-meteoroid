@@ -24,7 +24,7 @@ OpenWhisk must be running to build Meteoroid.
 
 ```bash
 cd fiware-meteoroid/docker/openwhisk-devtools/docker-compose
-quick-start
+make quick-start
 
 ```
 
@@ -51,7 +51,7 @@ cd fiware-meteoroid/docker/
 docker-compose up -d
 ```
 
-#### Export METEOROID_SCHEMA_ENDPOINT (Option) for CLI
+#### Export METEOROID_SCHEMA_ENDPOINT for CLI (Option)
 Defualt endpoint (http://localhost:3000/schema/?format=corejson)
 
 ```
@@ -167,3 +167,47 @@ If you can get the execution result of Function1, it is successful.
 ```bash
 meteoroid result list
 ```
+
+#### Create Schedule
+
+Schedule is a function that executes a function periodically.
+Schedule can be defined by Cron-like description.
+
+Create a schedule named schedule1.
+
+```bash
+curl -X POST http://localhost:3000/api/v1/schedules \
+    -H 'Content-Type: application/json' \
+    -d '{"function": FUNCTION_ID, "name": "schedule1", "schedule": "*/20 * * * * *"}'
+```
+
+#### List Schedules
+
+List schedules.
+
+```bash
+curl http://localhost:3000/api/v1/schedules
+```
+
+#### Delete Schedule
+
+Delete schedules.
+
+```bash
+curl -X DELETE http://localhost:3000/api/v1/schedules/SCHEDULE_ID
+```
+
+## Support language
+
+Currently, supported languages depend on [OpenWhisk](https://openwhisk.apache.org/documentation.html#actions-creating-and-invoking).
+
+* [Python3](./docs/function/python.md)
+* [Java(JDK8)](./docs/function/java.md)
+
+
+## Contribution guidelines
+
+You should read this if you plan to contribute with code to Meteoroid
+
+* [Contribution guidelines](./docs/manuals/contribution_guidelines.md)
+

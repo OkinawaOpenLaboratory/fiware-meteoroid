@@ -7,6 +7,11 @@ verify_ssl = true
 autopep8 = "*"
 flake8 = "*"
 coreapi-cli = "*"
+flake8-import-order = "*"
+flake8-quotes = "*"
+pep8-naming = "*"
+flake8-print = "*"
+flake8-eradicate = "*"
 
 [packages]
 django = "*"
