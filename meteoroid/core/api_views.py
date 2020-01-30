@@ -14,8 +14,8 @@ from .libs.decorators import (extract_faas_function_param,
                               extract_faas_subscription_param, fiware_headers)
 from .libs.faas_driver import FaaSDriver
 from .models import Endpoint, Function, Schedule, Subscription
-from .serializers import (EndpointSerializer, FunctionSerializer,
-                          ScheduleSerializer, SubscriptionSerializer)
+from .serializers import (EndpointSerializer, FunctionSerializer, ResultLogsSerializer,
+                          ResultSerializer, ScheduleSerializer, SubscriptionSerializer)
 
 logger = logging.getLogger(__name__)
 
@@ -222,7 +222,9 @@ class ListResultView(APIView):
     def get(self, request, fiware_service, fiware_service_path):
         faas_driver = FaaSDriver.get_faas_driver()
         results = faas_driver.list_result(fiware_service, fiware_service_path)
-        return Response(results)
+        serializer = ResultSerializer(data=results, many=True)
+        serializer.is_valid()
+        return Response(serializer.validated_data)
 
 
 class RetrieveResultView(APIView):
@@ -230,7 +232,9 @@ class RetrieveResultView(APIView):
     def get(self, request, pk, fiware_service, fiware_service_path):
         faas_driver = FaaSDriver.get_faas_driver()
         result = faas_driver.retrieve_result(pk, fiware_service, fiware_service_path)
-        return Response(result)
+        serializer = ResultSerializer(data=result)
+        serializer.is_valid()
+        return Response(serializer.data)
 
 
 class RetrieveResultLogsView(APIView):
@@ -238,7 +242,9 @@ class RetrieveResultLogsView(APIView):
     def get(self, request, pk, fiware_service, fiware_service_path):
         faas_driver = FaaSDriver.get_faas_driver()
         logs = faas_driver.retrieve_result_logs(pk, fiware_service, fiware_service_path)
-        return Response(logs)
+        serializer = ResultLogsSerializer(data=logs)
+        serializer.is_valid()
+        return Response(serializer.data)
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):

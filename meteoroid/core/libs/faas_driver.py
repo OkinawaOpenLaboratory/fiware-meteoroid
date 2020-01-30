@@ -244,10 +244,21 @@ class OpenWhiskDriver(FaaSDriver):
         return response
 
     def list_result(self, fiware_service, fiware_service_path):
-        return OpenWhiskClient().list_activation('guest')
+        response = OpenWhiskClient().list_activation('guest')
+        list_result = []
+        for result in response:
+            result['activation_id'] = result.pop('activationId')
+            if 'statusCode' in result:
+                result['status_code'] = result.pop('statusCode')
+            list_result.append(result)
+        return list_result
 
     def retrieve_result(self, result_id, fiware_service, fiware_service_path):
-        return OpenWhiskClient().retrieve_activation(result_id, 'guest')
+        result = OpenWhiskClient().retrieve_activation(result_id, 'guest')
+        result['activation_id'] = result.pop('activationId')
+        if 'statusCode' in result:
+            result['status_code'] = result.pop('statusCode')
+        return result
 
     def retrieve_result_logs(self, result_id, fiware_service, fiware_service_path):
         return OpenWhiskClient().retrieve_activation_logs(result_id, 'guest')
