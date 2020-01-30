@@ -20,7 +20,7 @@ services:
 
   meteoroid:
     build: ../
-    image: meteoroid/core:0.0.1
+    image: meteoroid/core:0.2.0
     stdin_open: true
     tty: true
     depends_on:
