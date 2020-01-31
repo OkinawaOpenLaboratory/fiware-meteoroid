@@ -15,7 +15,6 @@ before_install:
   - docker-compose -f ./docker/docker-compose.yml up -d
 
 script:
-  - docker-compose -f ./docker/docker-compose.yml run meteoroid /bin/sh -c "pipenv install --system --dev&& flake8 ./meteoroid"
+  - docker-compose -f ./docker/docker-compose.yml run meteoroid /bin/sh -c "pipenv install --system --dev && flake8 ./meteoroid && mkdocs build"
   - docker-compose -f ./docker/docker-compose.yml run meteoroid python ./meteoroid/manage.py test meteoroid/
   - ./meteoroid/tests/meteoroidtest.sh
-

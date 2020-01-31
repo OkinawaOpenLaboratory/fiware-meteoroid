@@ -1,0 +1,17 @@
+site_name: Fiware-Meteoroid
+site_url: https://fiware-meteoroid.readthedocs.org
+repo_url: https://github.com/OkinawaOpenLaboratory/fiware-meteoroid
+site_description: Meteoroid Documentation
+docs_dir: docs
+theme: readthedocs
+extra_css:
+  - 'https://www.fiware.org/style/fiware_readthedocs.css'
+  - 'https://www.fiware.org/style/fiware_readthedocs_core.css'
+nav:
+  - Home: index.md
+  - 'Getting Started': 'getting_started.md'
+  - 'User & Programmers Manual':
+    - 'Support Languages': 'user_and_programmers_manual/support_languages.md'
+  - 'Installation & Administration Manual':
+    - 'Install': 'installation_and_administration_manual/install.md'
+  - 'Contribution Guide': 'contribution_guidelines.md'
