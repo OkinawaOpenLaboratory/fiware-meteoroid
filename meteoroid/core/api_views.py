@@ -39,7 +39,7 @@ class FunctionViewSet(viewsets.ModelViewSet):
     def create(self, request, fiware_service, fiware_service_path, param):
         faas_driver = FaaSDriver.get_faas_driver()
         faas_function_data = faas_driver.create_function(fiware_service, fiware_service_path, param)
-        data = request.data
+        data = request.data.copy()
         data['fiware_service'] = fiware_service
         data['fiware_service_path'] = fiware_service_path
         serializer = self.serializer_class(data=data, faas_function_data=faas_function_data)
@@ -64,7 +64,7 @@ class FunctionViewSet(viewsets.ModelViewSet):
         faas_driver = FaaSDriver.get_faas_driver()
         faas_function_data = faas_driver.update_function(
             function, fiware_service, fiware_service_path, param)
-        data = request.data
+        data = request.data.copy()
         # Function name cannot be changed when updating.
         data['name'] = function.name
         data['fiware_service'] = fiware_service

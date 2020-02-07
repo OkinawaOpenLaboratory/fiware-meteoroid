@@ -20,21 +20,21 @@ def extract_faas_function_param(func):
         try:
             request = args[1]
             name = request.data.get('name')
-            code = request.data.pop('code')
-            language = request.data.pop('language')
+            code = request.data.get('code')
+            language = request.data.get('language')
             param = {
                 'name': name,
                 'code': code,
                 'language': language,
             }
             if 'main' in request.data:
-                param['main'] = request.data.pop('main')
+                param['main'] = request.data.get('main')
 
             if 'parameters' in request.data:
-                param['parameters'] = request.data.pop('parameters')
+                param['parameters'] = request.data.get('parameters')
 
             if 'binary' in request.data:
-                param['binary'] = request.data.pop('binary')
+                param['binary'] = request.data.get('binary')
         except KeyError as e:
             logger.error(f'Does not exist parameters : {e}')
             raise APIException(detail=f'Does not exist parameters: {e}')
