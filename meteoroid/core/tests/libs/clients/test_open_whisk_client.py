@@ -25,6 +25,70 @@ class OpenWhiskClientTestCase(unittest.TestCase):
             )
         return mock_resp
 
+    @patch('core.libs.clients.open_whisk_client.requests.put')
+    def test_create_action_with_package_200(self, mock):
+        mock_resp = self._mock_response(status_code=200)
+        mock.return_value = mock_resp
+
+        resp = self.client.create_action('whisk.system', {'name': 'test-action'})
+        self.assertEqual(resp.status_code, 200)
+
+    @patch('core.libs.clients.open_whisk_client.requests.put')
+    def test_create_action_with_package_500(self, mock):
+        mock_resp = self._mock_response(status_code=500)
+        mock.return_value = mock_resp
+
+        with self.assertRaises(OpenWhiskClientException):
+            self.client.create_action('whisk.system', {'name': 'test-action'})
+
+    @patch('core.libs.clients.open_whisk_client.requests.put')
+    def test_update_action_with_package_200(self, mock):
+        mock_resp = self._mock_response(status_code=200)
+        mock.return_value = mock_resp
+
+        resp = self.client.update_action('test-name', 'whisk.system', {})
+        self.assertEqual(resp.status_code, 200)
+
+    @patch('core.libs.clients.open_whisk_client.requests.put')
+    def test_update_action_with_package_500(self, mock):
+        mock_resp = self._mock_response(status_code=500)
+        mock.return_value = mock_resp
+
+        with self.assertRaises(OpenWhiskClientException):
+            self.client.update_action('test-action', 'whisk.system', {})
+
+    @patch('core.libs.clients.open_whisk_client.requests.get')
+    def test_retrieve_action_with_package_200(self, mock):
+        mock_resp = self._mock_response(status_code=200)
+        mock.return_value = mock_resp
+
+        resp = self.client.retrieve_action('test_name', 'whisk.system')
+        self.assertEqual(resp.status_code, 200)
+
+    @patch('core.libs.clients.open_whisk_client.requests.get')
+    def test_retrieve_action_with_package_500(self, mock):
+        mock_resp = self._mock_response(status_code=500)
+        mock.return_value = mock_resp
+
+        with self.assertRaises(OpenWhiskClientException):
+            self.client.retrieve_action('test-action', 'whisk.system')
+
+    @patch('core.libs.clients.open_whisk_client.requests.get')
+    def test_list_action_with_package_200(self, mock):
+        mock_resp = self._mock_response(status_code=200)
+        mock.return_value = mock_resp
+
+        resp = self.client.list_action('whisk.system')
+        self.assertEqual(resp.status_code, 200)
+
+    @patch('core.libs.clients.open_whisk_client.requests.get')
+    def test_list_action_with_package_500(self, mock):
+        mock_resp = self._mock_response(status_code=500)
+        mock.return_value = mock_resp
+
+        with self.assertRaises(OpenWhiskClientException):
+            self.client.list_action('whisk.system')
+
     @patch('core.libs.clients.open_whisk_client.requests.post')
     def test_invoke_action_with_package_200(self, mock):
         mock_resp = self._mock_response(status_code=200)
