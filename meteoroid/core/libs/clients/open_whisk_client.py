@@ -42,7 +42,7 @@ class OpenWhiskClient:
                                 auth=(self.user, self.password),
                                 verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def retrieve_action(self, action_name, namespace, code=False):
         code = 'true' if code else 'false'
@@ -54,7 +54,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def create_action(self, namespace, data):
         self.headers['Content-Type'] = 'application/json'
@@ -68,7 +68,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def update_action(self, action_name, namespace, data):
         self.headers['Content-Type'] = 'application/json'
@@ -81,7 +81,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def delete_action(self, action_name, namespace):
         response = requests.delete(
@@ -92,7 +92,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def invoke_action_with_package(self, package_name, action_name, namespace, data):
         self.headers['Content-Type'] = 'application/json'
@@ -125,7 +125,7 @@ class OpenWhiskClient:
                                 auth=(self.user, self.password),
                                 verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def create_api(self, namespace, data):
         action_name = data['apidoc']['action']['name']
@@ -143,7 +143,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def delete_api(self, api_name, namespace):
         response = requests.delete(
@@ -155,7 +155,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def list_activation(self, namespace):
         response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/activations',
@@ -163,7 +163,7 @@ class OpenWhiskClient:
                                 auth=(self.user, self.password),
                                 verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def retrieve_activation(self, activation_id, namespace):
         response = requests.get(
@@ -174,7 +174,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def retrieve_activation_logs(self, activation_id, namespace):
         response = requests.get(
@@ -185,7 +185,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def list_trigger(self, namespace):
         response = requests.get(f'{self.endpoint}/api/v1/namespaces/{namespace}/triggers',
