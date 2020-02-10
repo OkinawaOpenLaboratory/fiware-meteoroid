@@ -1,6 +1,9 @@
+import os
 from unittest.mock import patch
 
 from django.test import TestCase
+
+from parameterized import parameterized_class
 
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -10,7 +13,12 @@ from ..api_views import ScheduleViewSet
 from ..models import Function
 from ..models import Schedule
 
+DIR = os.path.dirname(os.path.abspath(__file__))
 
+
+@parameterized_class(('is_binary', 'code'),
+                     [(False, open(os.path.join(DIR, 'test_data/python_main.py')).read()),
+                      (True, open(os.path.join(DIR, 'test_data/python_binary_main.txt')).read())])
 class TestFunctionViewSet(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -18,27 +26,35 @@ class TestFunctionViewSet(TestCase):
         self.function = Function.objects.create(name='initial-function')
 
     class MockDriver:
+        def __init__(self, code, is_binary):
+            self.code = code
+            self.is_binary = is_binary
+
         def create_function(self, fiware_service, fiware_service_path, param):
             return {'name': 'test-function',
-                    'code': 'def main(args): return "test"',
+                    'code': self.code,
+                    'binary': self.is_binary,
                     'language': 'python:3',
                     'parameters': []}
 
         def list_function(self, fiware_service, fiware_service_path):
             return [{'name': 'initial-function',
-                     'code': 'def main(args): return "updated-test"',
+                     'code': self.code,
+                     'binary': self.is_binary,
                      'language': 'python:3',
                      'parameters': []}]
 
         def retrieve_function(self, function, fiware_service, fiware_service_path, code):
             return {'name': 'initial-function',
-                    'code': 'def main(args): return "updated-test"',
+                    'code': self.code,
+                    'binary': self.is_binary,
                     'language': 'python:3',
                     'parameters': []}
 
         def update_function(self, function, fiware_service, fiware_service_path, param):
             return {'name': 'initial-function',
-                    'code': 'def main(args): return "updated-test"',
+                    'code': self.code,
+                    'binary': self.is_binary,
                     'language': 'python:3',
                     'parameters': []}
 
@@ -47,9 +63,10 @@ class TestFunctionViewSet(TestCase):
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_create_function(self, mock):
-        mock.return_value = self.MockDriver()
+        mock.return_value = self.MockDriver(self.code, self.is_binary)
         data = {'name': 'test-function',
-                'code': 'def main(args): return "updated-test"',
+                'code': self.code,
+                'binary': self.is_binary,
                 'language': 'python:3',
                 'parameters': []}
 
@@ -59,9 +76,9 @@ class TestFunctionViewSet(TestCase):
                                     HTTP_FIWARE_SERVICEPATH='/test')
         last_id = Function.objects.last().id
         expected_data = {'id': last_id,
-                         'code': 'def main(args): return "test"',
+                         'code': self.code,
                          'language': 'python:3',
-                         'binary': False,
+                         'binary': self.is_binary,
                          'main': '',
                          'version': '',
                          'parameters': [],
@@ -75,18 +92,19 @@ class TestFunctionViewSet(TestCase):
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_update_function(self, mock):
-        mock.return_value = self.MockDriver()
+        mock.return_value = self.MockDriver(self.code, self.is_binary)
         data = {'name': 'test-function',
-                'code': 'def main(args): return "updated-test"',
+                'code': self.code,
+                'binary': self.is_binary,
                 'language': 'python:3',
                 'parameters': []}
         response = self.client.put(reverse('function-detail',
                                            kwargs={'pk': self.function.id}),
                                    data)
         expected_data = {'id': self.function.id,
-                         'code': 'def main(args): return "updated-test"',
+                         'code': self.code,
                          'language': 'python:3',
-                         'binary': False,
+                         'binary': self.is_binary,
                          'main': '',
                          'version': '',
                          'parameters': [],
@@ -100,13 +118,13 @@ class TestFunctionViewSet(TestCase):
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_list_function(self, mock):
-        mock.return_value = self.MockDriver()
+        mock.return_value = self.MockDriver(self.code, self.is_binary)
 
         response = self.client.get('/api/v1/functions')
         expected_data = [{'id': self.function.id,
-                          'code': 'def main(args): return "updated-test"',
+                          'code': self.code,
                           'language': 'python:3',
-                          'binary': False,
+                          'binary': self.is_binary,
                           'main': '',
                           'version': '',
                           'parameters': [],
@@ -119,13 +137,13 @@ class TestFunctionViewSet(TestCase):
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_retrieve_function(self, mock):
-        mock.return_value = self.MockDriver()
+        mock.return_value = self.MockDriver(self.code, self.is_binary)
         url = reverse('function-detail', kwargs={'pk': self.function.id})
         response = self.client.get(f'{url}?code=false')
         expected_data = {'id': self.function.id,
-                         'code': 'def main(args): return "updated-test"',
+                         'code': self.code,
                          'language': 'python:3',
-                         'binary': False,
+                         'binary': self.is_binary,
                          'main': '',
                          'version': '',
                          'parameters': [],
@@ -138,7 +156,7 @@ class TestFunctionViewSet(TestCase):
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_delete_function(self, mock):
-        mock.return_value = self.MockDriver()
+        mock.return_value = self.MockDriver(self.code, self.is_binary)
         response = self.client.delete(reverse('function-detail',
                                               kwargs={'pk': self.function.id}))
         self.assertEqual(Function.objects.count(), 0)
