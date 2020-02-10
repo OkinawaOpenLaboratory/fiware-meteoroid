@@ -21,7 +21,6 @@ DIR = os.path.dirname(os.path.abspath(__file__))
                       (True, open(os.path.join(DIR, 'test_data/python_binary_main.txt')).read())])
 class TestFunctionViewSet(TestCase):
     def setUp(self):
-        self.factory = APIRequestFactory()
         self.client = APIClient()
         self.function = Function.objects.create(name='initial-function')
 
@@ -87,8 +86,7 @@ class TestFunctionViewSet(TestCase):
                          'name': 'test-function'}
         self.assertEqual(response.status_code, 200)
         self.assertEqual(Function.objects.count(), 2)
-        self.assertEqual(response.data,
-                         expected_data)
+        self.assertEqual(response.data, expected_data)
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_update_function(self, mock):
@@ -113,8 +111,7 @@ class TestFunctionViewSet(TestCase):
                          'name': 'initial-function'}
         self.assertEqual(Function.objects.count(), 1)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data,
-                         expected_data)
+        self.assertEqual(response.data, expected_data)
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_list_function(self, mock):
@@ -132,8 +129,7 @@ class TestFunctionViewSet(TestCase):
                           'fiware_service_path': '/',
                           'name': 'initial-function'}]
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data,
-                         expected_data)
+        self.assertEqual(response.data, expected_data)
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_retrieve_function(self, mock):
@@ -151,8 +147,7 @@ class TestFunctionViewSet(TestCase):
                          'fiware_service_path': '/',
                          'name': 'initial-function'}
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data,
-                         expected_data)
+        self.assertEqual(response.data, expected_data)
 
     @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
     def test_delete_function(self, mock):
