@@ -13,6 +13,7 @@ pep8-naming = "*"
 flake8-print = "*"
 flake8-eradicate = "*"
 mkdocs = "*"
+parameterized = "*"
 
 [packages]
 django = "*"
