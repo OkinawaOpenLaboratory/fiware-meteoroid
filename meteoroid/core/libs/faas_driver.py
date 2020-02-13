@@ -208,7 +208,7 @@ class OpenWhiskDriver(FaaSDriver):
 
     def list_endpoint(self, fiware_service, fiware_service_path):
         api_list = OpenWhiskClient().list_api('guest').json()
-        return self.__build_all_endpoint_list_response(api_list).json()
+        return self.__build_all_endpoint_list_response(api_list)
 
     def retrieve_endpoint(self, endpoint, fiware_service, fiware_service_path):
         api_list = OpenWhiskClient().list_api('guest').json()
