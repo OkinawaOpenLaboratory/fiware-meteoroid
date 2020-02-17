@@ -116,7 +116,7 @@ class OpenWhiskClient:
                 self.password),
             verify=False)
         self.exception_handler(response)
-        return response.json()
+        return response
 
     def retrieve_api(self, api_name, namespace):
         response = requests.get(f'{self.endpoint}/api/v1/web/whisk.system/apimgmt/getApi.http?' +
