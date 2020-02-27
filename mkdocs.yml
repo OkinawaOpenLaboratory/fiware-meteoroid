@@ -15,3 +15,4 @@ nav:
   - 'Installation & Administration Manual':
     - 'Install': 'installation_and_administration_manual/install.md'
   - 'Contribution Guide': 'contribution_guidelines.md'
+  - 'API Specifications': 'api_specifications.md'
