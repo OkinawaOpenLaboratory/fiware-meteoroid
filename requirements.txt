@@ -1,0 +1,21 @@
+certifi==2019.11.28
+chardet==3.0.4
+cliff==2.16.0
+cmd2==0.8.9
+coreapi==2.3.3
+coreschema==0.0.4
+idna==2.8
+itypes==1.1.0
+jinja2==2.10.3
+markupsafe==1.1.1
+pbr==5.4.4
+prettytable==0.7.2
+pyparsing==2.4.5
+pyperclip==1.7.0
+pyyaml==5.2
+requests==2.22.0
+six==1.13.0
+stevedore==1.31.0
+uritemplate==3.0.0
+urllib3==1.25.7
+wcwidth==0.1.7 ; sys_platform != 'win32'
