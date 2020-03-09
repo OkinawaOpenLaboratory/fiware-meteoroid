@@ -10,6 +10,7 @@ extra_css:
 nav:
   - Home: index.md
   - 'Getting Started': 'getting_started.md'
+  - 'Meteoroid CLI': 'cli.md'
   - 'User & Programmers Manual':
     - 'Support Languages': 'user_and_programmers_manual/support_languages.md'
   - 'Installation & Administration Manual':
