@@ -15,5 +15,6 @@ nav:
     - 'Support Languages': 'user_and_programmers_manual/support_languages.md'
   - 'Installation & Administration Manual':
     - 'Install': 'installation_and_administration_manual/install.md'
+    - 'Logs': 'installation_and_administration_manual/logs.md'
   - 'Contribution Guide': 'contribution_guidelines.md'
   - 'API Specifications': 'api_specifications.md'
