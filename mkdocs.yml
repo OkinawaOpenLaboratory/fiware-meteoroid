@@ -9,6 +9,8 @@ extra_css:
   - 'https://www.fiware.org/style/fiware_readthedocs_core.css'
 nav:
   - Home: index.md
+  - 'Features': 'features.md'
+  - 'Architecture': 'architecture.md'
   - 'Getting Started': 'getting_started.md'
   - 'Meteoroid CLI': 'cli.md'
   - 'User & Programmers Manual':
