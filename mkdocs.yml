@@ -13,8 +13,10 @@ nav:
   - 'Architecture': 'architecture.md'
   - 'Getting Started': 'getting_started.md'
   - 'Meteoroid CLI': 'cli.md'
-  - 'User & Programmers Manual':
-    - 'Support Languages': 'user_and_programmers_manual/support_languages.md'
+  - 'Programmers Manual':
+    - 'Support Languages': 'programmers_manual/support_languages.md'
+    - 'Accessing Orion From Function': 'programmers_manual/accessing_orion_from_function.md'
+    - 'Using Function Parameters': 'programmers_manual/using_function_parameters.md'
   - 'Installation & Administration Manual':
     - 'Install': 'installation_and_administration_manual/install.md'
     - 'Logs': 'installation_and_administration_manual/logs.md'
