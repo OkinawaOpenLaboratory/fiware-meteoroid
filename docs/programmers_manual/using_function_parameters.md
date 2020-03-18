@@ -5,11 +5,12 @@
 Function can receive parameters and use them.
 
 - [Python](#python)
+- [Java](#java)
 
 ### Python
 
 You can receive parameters from main function arguments (params).
-The type of params is dictionary.
+The type of params is a dictionary.
 
 ```python
 def main(params):
@@ -18,6 +19,28 @@ def main(params):
     return params
 ```
 
+### Java
+
+You can receive parameters from main function arguments (params).
+The type of params is *com.google.gson.JsonObject*.
+
+```java
+import com.google.gson.JsonObject;
+
+public class Main {
+    public static JsonObject main(JsonObject params) {
+        String name = "stranger";
+        int age = 0;
+        if(params.has("name")) {
+           name = params.getAsJsonPrimitive("name").getAsString();
+        }
+        if(params.has("age")) {
+           age = params.getAsJsonPrimitive("age").getAsInt();
+        }
+        return params;
+    }
+}
+```
 
 ## Pass parameters to Function
 
