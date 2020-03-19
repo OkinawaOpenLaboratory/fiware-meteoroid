@@ -2,7 +2,7 @@
 
 Command-line interface to the Meteoroid APIs (meteoroid CLI Version: 1.0.0)
 
-```
+```plain
 meteoroid -h
 usage: meteoroid [--version] [-v | -q] [--log-file LOG_FILE] [-h] [--debug]
 
@@ -56,7 +56,7 @@ Commands:
 
 Create an endpoint.
 
-```
+```plain
 meteoroid endpoint create                 
 usage: meteoroid endpoint create [-h] [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH]
                                  name path method function_id
@@ -75,7 +75,7 @@ usage: meteoroid endpoint create [-h] [--fiwareservice FIWARESERVICE] [--fiwares
 
 #### Usage example
 
-```
+```plain
 meteoroid endpoint create endpoint1 /function1 post 4
 {'id': 1, 'url': 'http://192.168.0.1:9090/api/23bc46b1-71f6-4ed5-8c54-816aa4f8c502/endpoint1/function1', 'fiware_service': '', 'fiware_service_path': '/', 'name': 'endpoint1', 'path': '/function1', 'method': 'post', 'function': 1}
 ```
@@ -84,7 +84,7 @@ meteoroid endpoint create endpoint1 /function1 post 4
 
 Delete an endpoint.
 
-```
+```plain
 meteoroid endpoint delete
 usage: meteoroid endpoint delete [-h] [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH] id
 ```
@@ -99,7 +99,7 @@ usage: meteoroid endpoint delete [-h] [--fiwareservice FIWARESERVICE] [--fiwares
 
 #### Usage example
 
-```
+```plain
 meteoroid endpoint delete 1
 ```
 
@@ -107,13 +107,13 @@ meteoroid endpoint delete 1
 
 List endpoints.
 
-```
+```plain
 meteoroid endpoint list
 ```
 
 #### Usage example
 
-```
+```plain
 meteoroid endpoint list
 +----+----------------------------------------------------------------------------------+----------------+---------------------+-----------+--------+--------+----------+
 | id | url                                                                              | fiware_service | fiware_service_path | name      | path   | method | function |
@@ -126,7 +126,7 @@ meteoroid endpoint list
 
 Show an endpoint.
 
-```
+```plain
 meteoroid endpoint show
 usage: meteoroid endpoint show [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN] [--noindent] [--prefix PREFIX] [--max-width <integer>] [--fit-width] [--print-empty] [--fiwareservice FIWARESERVICE]
                                [--fiwareservicepath FIWARESERVICEPATH]
@@ -153,7 +153,7 @@ usage: meteoroid endpoint show [-h] [-f {json,shell,table,value,yaml}] [-c COLUM
 
 #### Usage example
 
-```
+```plain
 meteoroid endpoint show 1
 +---------------------+----------------------------------------------------------------------------------+
 | Field               | Value                                                                            |
@@ -173,7 +173,7 @@ meteoroid endpoint show 1
 
 Create a function.
 
-```
+```plain
 meteoroid function create
 usage: meteoroid function create [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN] [--noindent] [--prefix PREFIX] [--max-width <integer>] [--fit-width] [--print-empty] [-l LANG:VERSION] [-m MAIN_FILE_NAME] [-p KEY VALUE]
                                  [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH]
@@ -201,7 +201,7 @@ usage: meteoroid function create [-h] [-f {json,shell,table,value,yaml}] [-c COL
 
 #### Usage example
 
-```
+```plain
 meteoroid function create -l python:3 function1 function1.py -p name Meteoroid
 +---------------------+-------------------------------------------+
 | Field               | Value                                     |
@@ -227,7 +227,7 @@ meteoroid function create -l python:3 function1 function1.py -p name Meteoroid
 
 Delete a function.
 
-```
+```plain
 meteoroid function delete
 usage: meteoroid function delete [-h] [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH] id
 ```
@@ -242,7 +242,7 @@ usage: meteoroid function delete [-h] [--fiwareservice FIWARESERVICE] [--fiwares
 
 #### Usage example
 
-```
+```plain
 meteoroid function delete 1
 Success delete function
 ```
@@ -251,13 +251,13 @@ Success delete function
 
 List functions.
 
-```
+```plain
 meteoroid function list
 ```
 
 #### Usage example
 
-```
+```plain
 meteoroid function list
 +----+------+----------+--------+------+---------+------------+----------------+---------------------+-----------+
 | id | code | language | binary | main | version | parameters | fiware_service | fiware_service_path | name      |
@@ -270,7 +270,7 @@ meteoroid function list
 
 Show a function.
 
-```
+```plain
 meteoroid function show
 usage: meteoroid function show [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN] [--noindent] [--prefix PREFIX] [--max-width <integer>] [--fit-width] [--print-empty] [-co] [--fiwareservice FIWARESERVICE]
                                [--fiwareservicepath FIWARESERVICEPATH]
@@ -296,7 +296,7 @@ usage: meteoroid function show [-h] [-f {json,shell,table,value,yaml}] [-c COLUM
 
 #### Usage example
 
-```
+```plain
 meteoroid function show 1
 +---------------------+-----------------------------------------+
 | Field               | Value                                   |
@@ -316,7 +316,7 @@ meteoroid function show 1
 
 ### function update
 
-```
+```plain
 meteoroid function update
 usage: meteoroid function update [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN] [--noindent] [--prefix PREFIX] [--max-width <integer>] [--fit-width] [--print-empty] [-l LANG:VERSION] [-m MAIN_FILE_NAME] [-p KEY VALUE KEY VALUE]
                                  [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH]
@@ -344,7 +344,7 @@ usage: meteoroid function update [-h] [-f {json,shell,table,value,yaml}] [-c COL
 
 #### Usage example
 
-```
+```plain
 meteoroid function update 4 function1.py -p name FIWARE
 +---------------------+-------------------------------------------+
 | Field               | Value                                     |
@@ -364,20 +364,19 @@ meteoroid function update 4 function1.py -p name FIWARE
 | fiware_service_path | /                                         |
 | name                | function1                                 |
 +---------------------+-------------------------------------------+
-
 ```
 
 ### result list
 
 List function execution results
 
-```
+```plain
 meteoroid result list
 ```
 
 #### Usage example
 
-```
+```plain
 meteoroid result list
 +----------------------------------+-----------+-----------+----------+---------------+---------------+---------+-------------+---------+
 | activation_id                    | name      | namespace | duration | start         | end           | publish | status_code | version |
@@ -392,7 +391,7 @@ meteoroid result list
 
 Show a function execution result
 
-```
+```plain
 meteoroid result show
 usage: meteoroid result show [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN] [--noindent] [--prefix PREFIX] [--max-width <integer>] [--fit-width] [--print-empty] [--annotations] [--fiwareservice FIWARESERVICE]
                              [--fiwareservicepath FIWARESERVICEPATH]
@@ -416,7 +415,7 @@ usage: meteoroid result show [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN]
 
 #### Usage example
 
-```
+```plain
 meteoroid result show cc4d4442b8ae41d18d4442b8ae41d10f
 +---------------+--------------------------------------------------------------------------------------------------------------------+
 | Field         | Value                                                                                                              |
@@ -439,7 +438,7 @@ meteoroid result show cc4d4442b8ae41d18d4442b8ae41d10f
 
 Create a schedule.
 
-```
+```plain
 meteoroid schedule create
 usage: meteoroid schedule create [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN] [--noindent] [--prefix PREFIX] [--max-width <integer>] [--fit-width] [--print-empty] [-s STARTDATE] [-e STOPDATE] [-p TRIGGER_PAYLOAD]
                                  [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH]
@@ -468,7 +467,7 @@ usage: meteoroid schedule create [-h] [-f {json,shell,table,value,yaml}] [-c COL
 
 #### Usage example1
 
-```
+```plain
 meteoroid schedule create schedule1 '*/20 * * * *' 4
 +-----------------+--------------+
 | Field           | Value        |
@@ -485,7 +484,7 @@ meteoroid schedule create schedule1 '*/20 * * * *' 4
 
 #### Usage example2
 
-```
+```plain
 meteoroid schedule create schedule1 '*/20 * * * *' 4 -e '2021-03-31T23:59:00.000Z' -p '{"name":"Meteoroid"}'
 +-----------------+--------------------------------------+
 | Field           | Value                                |
@@ -504,7 +503,7 @@ meteoroid schedule create schedule1 '*/20 * * * *' 4 -e '2021-03-31T23:59:00.000
 
 Delete a schedule.
 
-```
+```plain
 meteoroid schedule delete
 usage: meteoroid schedule delete [-h] [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH] id
 ```
@@ -519,7 +518,7 @@ usage: meteoroid schedule delete [-h] [--fiwareservice FIWARESERVICE] [--fiwares
 
 #### Usage example
 
-```
+```plain
 meteoroid schedule delete 1
 ```
 
@@ -527,13 +526,13 @@ meteoroid schedule delete 1
 
 List schedules.
 
-```
+```plain
 meteoroid schedule list
 ```
 
 #### Usage example
 
-```
+```plain
 meteoroid schedule list
 +----+----------------+---------------------+-------------------+----------------+----------+-----------+
 | id | fiware_service | fiware_service_path | trigger_name      | rule_name      | function | name      |
@@ -546,7 +545,7 @@ meteoroid schedule list
 
 Show a schedule.
 
-```
+```plain
 meteoroid schedule show
 usage: meteoroid schedule show [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN] [--noindent] [--prefix PREFIX] [--max-width <integer>] [--fit-width] [--print-empty] [--fiwareservice FIWARESERVICE]
                                [--fiwareservicepath FIWARESERVICEPATH]
@@ -570,7 +569,7 @@ usage: meteoroid schedule show [-h] [-f {json,shell,table,value,yaml}] [-c COLUM
 
 #### Usage example
 
-```
+```plain
 $ meteoroid schedule show 3
 +-----------------+--------------------------------------+
 | Field           | Value                                |
@@ -589,7 +588,7 @@ $ meteoroid schedule show 3
 
 Create a subscription.
 
-```
+```plain
 meteoroid subscription create
 usage: meteoroid subscription create [-h] [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH] endpoint_id orion_subscription
 ```
@@ -605,7 +604,7 @@ usage: meteoroid subscription create [-h] [--fiwareservice FIWARESERVICE] [--fiw
 
 #### Usage example
 
-```
+```plain
 meteoroid subscription create 3 '
 > {
 >     "description": "test subscription",
@@ -632,7 +631,7 @@ meteoroid subscription create 3 '
 
 Delete a subscription.
 
-```
+```plain
 meteoroid subscription delete
 usage: meteoroid subscription delete [-h] [--fiwareservice FIWARESERVICE] [--fiwareservicepath FIWARESERVICEPATH] id
 ```
@@ -647,7 +646,7 @@ usage: meteoroid subscription delete [-h] [--fiwareservice FIWARESERVICE] [--fiw
 
 #### Usage example
 
-```
+```plain
 meteoroid subscription delete 1
 ```
 
@@ -655,13 +654,13 @@ meteoroid subscription delete 1
 
 List subscriptions.
 
-```
+```plain
 meteoroid subscription list
 ```
 
 #### Usage example
 
-```
+```plain
 meteoroid subscription list
 +----+----------------+---------------------+-------------+--------------------------+
 | id | fiware_service | fiware_service_path | endpoint_id | orion_subscription_id    |
@@ -674,7 +673,7 @@ meteoroid subscription list
 
 Show a subscription.
 
-```
+```plain
 meteoroid subscription show
 usage: meteoroid subscription show [-h] [-f {json,shell,table,value,yaml}] [-c COLUMN] [--noindent] [--prefix PREFIX] [--max-width <integer>] [--fit-width] [--print-empty] [--fiwareservice FIWARESERVICE]
                                    [--fiwareservicepath FIWARESERVICEPATH]
@@ -698,7 +697,7 @@ usage: meteoroid subscription show [-h] [-f {json,shell,table,value,yaml}] [-c C
 
 #### Usage example
 
-```
+```plain
 $ meteoroid subscription show 1
 +-----------------------+--------------------------+
 | Field                 | Value                    |
