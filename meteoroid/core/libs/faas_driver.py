@@ -179,14 +179,16 @@ class OpenWhiskDriver(FaaSDriver):
             'version': action['version'],
             'parameters': action['parameters']
         }
-        if code:
+        if code and not action['exec']['binary']:
             function['code'] = action['exec']['code']
         return function
 
     def create_function(self, fiware_service, fiware_service_path, data):
         builded_data = self.__build_action_request_parameter('guest', data)
         response = OpenWhiskClient().create_action('guest', builded_data).json()
-        response['code'] = data['code']
+        if not response['exec']['binary']:
+            response['code'] = data['code']
+
         response['language'] = data['language']
         response['binary'] = response['exec']['binary']
         return response
@@ -198,7 +200,8 @@ class OpenWhiskDriver(FaaSDriver):
         response = OpenWhiskClient().update_action(function.name,
                                                    'guest',
                                                    builded_data).json()
-        response['code'] = data['code']
+        if not response['exec']['binary']:
+            response['code'] = data['code']
         response['language'] = data['language']
         response['binary'] = response['exec']['binary']
         return response
