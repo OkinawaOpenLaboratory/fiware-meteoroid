@@ -132,7 +132,18 @@ meteoroid endpoint create room /thermometer post 1
 Output:
 
 ```bash
-{'id': 1, 'url': 'http://192.168.128.100:9090/api/23bc46b1-71f6-4ed5-8c54-816aa4f8c502/room/thermometer', 'fiware_service': '', 'fiware_service_path': '/', 'name': 'room', 'path': '/thermometer', 'method': 'post', 'function': 1}
++---------------------+---------------------------------------------------------------------------------------+
+| Field               | Value                                                                                 |
++---------------------+---------------------------------------------------------------------------------------+
+| id                  | 1                                                                                     |
+| url                 | http://192.168.128.100:9090/api/23bc46b1-71f6-4ed5-8c54-816aa4f8c502/room/thermometer |
+| fiware_service      |                                                                                       |
+| fiware_service_path | /                                                                                     |
+| name                | room                                                                                  |
+| path                | /thermometer                                                                          |
+| method              | post                                                                                  |
+| function            | 1                                                                                     |
++---------------------+---------------------------------------------------------------------------------------+
 ```
 
 ---
@@ -214,6 +225,15 @@ Output:
 
 ```bash
 {'id': 1, 'fiware_service': '', 'fiware_service_path': '/', 'endpoint_id': 1, 'orion_subscription_id': '5e61a087b2a79e45bd8de8d5'}
++-----------------------+--------------------------+
+| Field                 | Value                    |
++-----------------------+--------------------------+
+| id                    | 1                        |
+| fiware_service        |                          |
+| fiware_service_path   | /                        |
+| endpoint_id           | 1                        |
+| orion_subscription_id | 5e61a087b2a79e45bd8de8d5 |
++-----------------------+--------------------------+
 ```
 
 ---
