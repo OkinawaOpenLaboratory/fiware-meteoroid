@@ -17,6 +17,7 @@ nav:
     - 'Support Languages': 'programmers_manual/support_languages.md'
     - 'Accessing Orion From Function': 'programmers_manual/accessing_orion_from_function.md'
     - 'Using Function Parameters': 'programmers_manual/using_function_parameters.md'
+    - 'Using Third Patry Packages': 'programmers_manual/using_third_party_package.md'
   - 'Installation & Administration Manual':
     - 'Install': 'installation_and_administration_manual/install.md'
     - 'Logs': 'installation_and_administration_manual/logs.md'
