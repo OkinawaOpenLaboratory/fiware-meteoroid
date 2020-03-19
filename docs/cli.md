@@ -76,8 +76,19 @@ usage: meteoroid endpoint create [-h] [--fiwareservice FIWARESERVICE] [--fiwares
 #### Usage example
 
 ```plain
-meteoroid endpoint create endpoint1 /function1 post 4
-{'id': 1, 'url': 'http://192.168.0.1:9090/api/23bc46b1-71f6-4ed5-8c54-816aa4f8c502/endpoint1/function1', 'fiware_service': '', 'fiware_service_path': '/', 'name': 'endpoint1', 'path': '/function1', 'method': 'post', 'function': 1}
+meteoroid endpoint create endpoint1 /function1 post 1
++---------------------+--------------------------------------------------------------------------------------+
+| Field               | Value                                                                                |
++---------------------+--------------------------------------------------------------------------------------+
+| id                  | 1                                                                                    |
+| url                 | http://192.168.0.1:9090/api/23bc46b1-71f6-4ed5-8c54-816aa4f8c502/endpoint2/function9 |
+| fiware_service      |                                                                                      |
+| fiware_service_path | /                                                                                    |
+| name                | endpoint1                                                                            |
+| path                | /function1                                                                           |
+| method              | post                                                                                 |
+| function            | 1                                                                                    |
++---------------------+--------------------------------------------------------------------------------------+
 ```
 
 ### endpoint delete
@@ -101,6 +112,7 @@ usage: meteoroid endpoint delete [-h] [--fiwareservice FIWARESERVICE] [--fiwares
 
 ```plain
 meteoroid endpoint delete 1
+Success delete endpoint
 ```
 
 ### endpoint list
@@ -520,6 +532,7 @@ usage: meteoroid schedule delete [-h] [--fiwareservice FIWARESERVICE] [--fiwares
 
 ```plain
 meteoroid schedule delete 1
+Success delete schedule
 ```
 
 ### schedule list
@@ -624,7 +637,15 @@ meteoroid subscription create 3 '
 >     "expires": "2040-01-01T14:00:00.00Z",
 >     "throttling": 1
 > }'
-{'id': 2, 'fiware_service': '', 'fiware_service_path': '/', 'endpoint_id': 3, 'orion_subscription_id': '5e5f5d8e9c3996ddd2e1ee8c'}
++-----------------------+--------------------------+
+| Field                 | Value                    |
++-----------------------+--------------------------+
+| id                    | 2                        |
+| fiware_service        |                          |
+| fiware_service_path   | /                        |
+| endpoint_id           | 3                        |
+| orion_subscription_id | 5e5f5d8e9c3996ddd2e1ee8c |
++-----------------------+--------------------------+
 ```
 
 ### subscription delete
@@ -648,6 +669,7 @@ usage: meteoroid subscription delete [-h] [--fiwareservice FIWARESERVICE] [--fiw
 
 ```plain
 meteoroid subscription delete 1
+Success delete subscription
 ```
 
 ### subscription list
