@@ -65,7 +65,7 @@ The first argument of the main function is provided POST parameter and function 
 * **temperature**: The temperature is given an attribute of Entity as the HTTP request parameter(POST) assumed structures of Orion notification.
 * **threshold**: The threshold is given parameters when creating or updating function as a command line option.
 
-[Support Language](./user_and_programmers_manual/support_languages.md)
+[Support Language](./programmers_manual/support_languages.md)
 
 ```python
 def main(params):

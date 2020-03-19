@@ -1,5 +1,21 @@
 # Install Meteoroid
 
+## Requirements
+
+The following environment can run Meteoroid with FIWRRE(orion) like [Getting Started](../getting_started.md). So you can easily start using Meteoroid in your machine.
+
+### Hardware
+
+| Hardware | CPU | Memory | HardDisk |
+| -- | -- | -- | -- |
+| MacBook Pro | Intel Core i5 | 8GB | 500GB |
+
+### Software
+
+| Docker version  | Docker Compose version |
+| -- | -- |
+| 19.03.4 | 1.16.1 |
+
 ## Download
 
 ```bash
