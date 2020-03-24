@@ -508,6 +508,8 @@ paths:
       responses:
         "201":
           description: Schedule created successfully
+          schema:
+            $ref: '#/definitions/Schedule'
         "400":
           description: Invalid input, object invalid
         "409":
