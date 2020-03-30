@@ -10,6 +10,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APIRequestFactory
 
 from ..api_views import ScheduleViewSet
+from ..models import Endpoint
 from ..models import Function
 from ..models import Schedule
 
@@ -155,6 +156,113 @@ class TestFunctionViewSet(TestCase):
         response = self.client.delete(reverse('function-detail',
                                               kwargs={'pk': self.function.id}))
         self.assertEqual(Function.objects.count(), 0)
+        self.assertEqual(response.status_code, 204)
+
+    def tearDown(self):
+        Function.objects.all().delete()
+
+
+class TestEndpointViewSet(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.function = Function.objects.create(name='test-function')
+        self.endpoint = Endpoint.objects.create(name='test',
+                                                path='path',
+                                                method='get',
+                                                function=self.function)
+
+    class MockDriver:
+        def __init__(self, function):
+            self.function = function
+
+        def create_endpoint(self, fiware_service, fiware_service_path, param):
+            return {'name': 'test',
+                    'path': 'path',
+                    'method': 'get',
+                    'function': self.function.id,
+                    'url': 'http://test/path'}
+
+        def list_endpoint(self, fiware_service, fiware_service_path):
+            return [{'name': 'test',
+                     'path': 'path',
+                     'method': 'get',
+                     'action_name': self.function.name,
+                     'function': self.function.id,
+                     'url': 'http://test/path'}]
+
+        def retrieve_endpoint(self, function, fiware_service, fiware_service_path):
+            return {'name': 'test',
+                    'path': 'path',
+                    'method': 'get',
+                    'function': self.function.id,
+                    'url': 'http://test/path'}
+
+        def delete_endpoint(self, function, fiware_service, fiware_service_path):
+            return Response()
+
+    @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
+    def test_create_endpoint(self, mock):
+        mock.return_value = self.MockDriver(self.function)
+        data = {'name': 'test',
+                'path': 'path',
+                'method': 'get',
+                'function': self.function.id}
+
+        response = self.client.post(reverse('endpoints-list'),
+                                    data,
+                                    HTTP_FIWARE_SERVICE='test',
+                                    HTTP_FIWARE_SERVICEPATH='/test')
+        last_id = Endpoint.objects.last().id
+        expected_data = {'id': last_id,
+                         'name': 'test',
+                         'path': 'path',
+                         'method': 'get',
+                         'function': self.function.id,
+                         'url': 'http://test/path',
+                         'fiware_service': 'test',
+                         'fiware_service_path': '/test'}
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Endpoint.objects.count(), 2)
+        self.assertEqual(response.data, expected_data)
+
+    @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
+    def test_list_endpoint(self, mock):
+        mock.return_value = self.MockDriver(self.function)
+
+        response = self.client.get(reverse('endpoints-list'))
+        expected_data = [{'id': self.endpoint.id,
+                          'name': 'test',
+                          'path': 'path',
+                          'method': 'get',
+                          'function': self.function.id,
+                          'url': 'http://test/path',
+                          'fiware_service': '',
+                          'fiware_service_path': '/'}]
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, expected_data)
+
+    @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
+    def test_retrieve_endpoint(self, mock):
+        mock.return_value = self.MockDriver(self.function)
+        url = reverse('endpoints-detail', kwargs={'pk': self.endpoint.id})
+        response = self.client.get(url)
+        expected_data = {'id': self.endpoint.id,
+                         'name': 'test',
+                         'path': 'path',
+                         'method': 'get',
+                         'function': self.function.id,
+                         'url': 'http://test/path',
+                         'fiware_service': '',
+                         'fiware_service_path': '/'}
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, expected_data)
+
+    @patch('core.libs.faas_driver.FaaSDriver.get_faas_driver')
+    def test_delete_endpoint(self, mock):
+        mock.return_value = self.MockDriver(self.function)
+        response = self.client.delete(reverse('endpoints-detail',
+                                              kwargs={'pk': self.endpoint.id}))
+        self.assertEqual(Endpoint.objects.count(), 0)
         self.assertEqual(response.status_code, 204)
 
     def tearDown(self):

@@ -116,7 +116,7 @@ class EndpointViewSet(viewsets.ModelViewSet):
         faas_driver = FaaSDriver.get_faas_driver()
         faas_endpoint_data = faas_driver.create_endpoint(
             fiware_service, fiware_service_path, request.data)
-        data = request.data
+        data = request.data.copy()
         data['fiware_service'] = fiware_service
         data['fiware_service_path'] = fiware_service_path
         serializer = self.serializer_class(data=data, faas_endpoint_data=faas_endpoint_data)
