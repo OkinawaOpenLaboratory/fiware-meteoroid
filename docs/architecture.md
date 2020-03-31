@@ -22,7 +22,7 @@ Meteoroid Core provide the following items.
 
 **Interfaces**
 
-- [RESTful API](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/OkinawaOpenLaboratory/fiware-meteoroid/develop-v1.0/docs/swagger/swagger.yaml)
+- [RESTful API](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/OkinawaOpenLaboratory/fiware-meteoroid/master/docs/swagger/swagger.yaml)
 
 Meteorid is easily accessible from clients via a command line tool called the [Meteoroid CLI](./cli.md)
 
