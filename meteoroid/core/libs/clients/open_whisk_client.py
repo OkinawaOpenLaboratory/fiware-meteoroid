@@ -24,7 +24,7 @@ class OpenWhiskClient:
         self.host = os.environ.get('OPEN_WHISK_HOST', '')
         self.endpoint = f'https://{self.host}'
         self.headers = {
-            'User-Agent': 'fiware-meteoroid/0.1'
+            'User-Agent': 'fiware-meteoroid/1.0'
         }
         self.api_query_param = f'accesstoken=DUMMY+TOKEN&spaceguid={self.user}'
 
