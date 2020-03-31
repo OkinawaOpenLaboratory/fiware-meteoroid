@@ -1,7 +1,7 @@
 # Welcome to FIWARE Meteoroid
 
-![PyPI](https://img.shields.io/pypi/v/meteoroid-cli)
-![GitHub](https://img.shields.io/github/license/OkinawaOpenLaboratory/fiware-meteoroid?color=blue)
+[![PyPI](https://img.shields.io/pypi/v/meteoroid-cli)](https://pypi.org/project/meteoroid-cli/)
+[![GitHub](https://img.shields.io/github/license/OkinawaOpenLaboratory/fiware-meteoroid?color=blue)](./LICENSE)
 
 ## Overview
 
