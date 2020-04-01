@@ -1,0 +1,25 @@
+site_name: Fiware-Meteoroid
+site_url: https://fiware-meteoroid.readthedocs.org
+repo_url: https://github.com/OkinawaOpenLaboratory/fiware-meteoroid
+site_description: Meteoroid Documentation
+docs_dir: docs
+theme: readthedocs
+extra_css:
+  - 'https://www.fiware.org/style/fiware_readthedocs.css'
+  - 'https://www.fiware.org/style/fiware_readthedocs_core.css'
+nav:
+  - Home: index.md
+  - 'Features': 'features.md'
+  - 'Architecture': 'architecture.md'
+  - 'Getting Started': 'getting_started.md'
+  - 'Meteoroid CLI': 'cli.md'
+  - 'Programmers Manual':
+    - 'Support Languages': 'programmers_manual/support_languages.md'
+    - 'Accessing Orion From Function': 'programmers_manual/accessing_orion_from_function.md'
+    - 'Using Function Parameters': 'programmers_manual/using_function_parameters.md'
+    - 'Using Third Patry Packages': 'programmers_manual/using_third_party_package.md'
+  - 'Installation & Administration Manual':
+    - 'Install': 'installation_and_administration_manual/install.md'
+    - 'Logs': 'installation_and_administration_manual/logs.md'
+  - 'Contribution Guide': 'contribution_guidelines.md'
+  - 'API Specifications': 'api_specifications.md'

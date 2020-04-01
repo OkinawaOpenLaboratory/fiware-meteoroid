@@ -153,7 +153,7 @@ class OpenWhiskDriver(FaaSDriver):
 
     def list_function(self, fiware_service, fiware_service_path):
         function_list = []
-        action_list = OpenWhiskClient().list_action('guest')
+        action_list = OpenWhiskClient().list_action('guest').json()
         for action in action_list:
             language = ''
             for annotation in action['annotations']:
@@ -170,7 +170,7 @@ class OpenWhiskDriver(FaaSDriver):
         return function_list
 
     def retrieve_function(self, function, fiware_service, fiware_service_path, code=False):
-        action = OpenWhiskClient().retrieve_action(function.name, 'guest', code=code)
+        action = OpenWhiskClient().retrieve_action(function.name, 'guest', code=code).json()
         function = {
             'namespace': f'{fiware_service}{fiware_service_path}',
             'name': action['name'],
@@ -179,15 +179,16 @@ class OpenWhiskDriver(FaaSDriver):
             'version': action['version'],
             'parameters': action['parameters']
         }
-        if code:
+        if code and not action['exec']['binary']:
             function['code'] = action['exec']['code']
         return function
 
     def create_function(self, fiware_service, fiware_service_path, data):
-        response = OpenWhiskClient().create_action('guest',
-                                                   self.__build_action_request_parameter('guest',
-                                                                                         data))
-        response['code'] = data['code']
+        builded_data = self.__build_action_request_parameter('guest', data)
+        response = OpenWhiskClient().create_action('guest', builded_data).json()
+        if not response['exec']['binary']:
+            response['code'] = data['code']
+
         response['language'] = data['language']
         response['binary'] = response['exec']['binary']
         return response
@@ -198,29 +199,30 @@ class OpenWhiskDriver(FaaSDriver):
         builded_data['name'] = function.name
         response = OpenWhiskClient().update_action(function.name,
                                                    'guest',
-                                                   builded_data)
-        response['code'] = data['code']
+                                                   builded_data).json()
+        if not response['exec']['binary']:
+            response['code'] = data['code']
         response['language'] = data['language']
         response['binary'] = response['exec']['binary']
         return response
 
     def delete_function(self, function, fiware_service, fiware_service_path):
-        return OpenWhiskClient().delete_action(function.name, 'guest')
+        return OpenWhiskClient().delete_action(function.name, 'guest').json()
 
     def list_endpoint(self, fiware_service, fiware_service_path):
-        api_list = OpenWhiskClient().list_api('guest')
+        api_list = OpenWhiskClient().list_api('guest').json()
         return self.__build_all_endpoint_list_response(api_list)
 
     def retrieve_endpoint(self, endpoint, fiware_service, fiware_service_path):
-        api_list = OpenWhiskClient().list_api('guest')
+        api_list = OpenWhiskClient().list_api('guest').json()
         for endpoint_data in self.__build_all_endpoint_list_response(api_list):
             if endpoint.equals_faas_data(endpoint_data):
                 return endpoint_data
         return {}
 
     def create_endpoint(self, fiware_service, fiware_service_path, data):
-        api = OpenWhiskClient().create_api('guest',
-                                           self.__build_api_request_parameter('guest', data))
+        builded_data = self.__build_api_request_parameter('guest', data)
+        api = OpenWhiskClient().create_api('guest', builded_data).json()
         function = Function.objects.filter(
             fiware_service=fiware_service,
             fiware_service_path=fiware_service_path).get(
@@ -241,12 +243,12 @@ class OpenWhiskDriver(FaaSDriver):
         # Recreate apis that should not be deleted
         for other_endpoint in other_endpoints:
             self.create_endpoint(fiware_service, fiware_service_path, other_endpoint.get_dict())
-        return response
+        return response.json()
 
     def list_result(self, fiware_service, fiware_service_path):
         response = OpenWhiskClient().list_activation('guest')
         list_result = []
-        for result in response:
+        for result in response.json():
             result['activation_id'] = result.pop('activationId')
             if 'statusCode' in result:
                 result['status_code'] = result.pop('statusCode')
@@ -254,14 +256,14 @@ class OpenWhiskDriver(FaaSDriver):
         return list_result
 
     def retrieve_result(self, result_id, fiware_service, fiware_service_path):
-        result = OpenWhiskClient().retrieve_activation(result_id, 'guest')
+        result = OpenWhiskClient().retrieve_activation(result_id, 'guest').json()
         result['activation_id'] = result.pop('activationId')
         if 'statusCode' in result:
             result['status_code'] = result.pop('statusCode')
         return result
 
     def retrieve_result_logs(self, result_id, fiware_service, fiware_service_path):
-        return OpenWhiskClient().retrieve_activation_logs(result_id, 'guest')
+        return OpenWhiskClient().retrieve_activation_logs(result_id, 'guest').json()
 
     def __build_trigger_request_parameter(self, data):
         trigger_name = data['name'] + '-trigger'

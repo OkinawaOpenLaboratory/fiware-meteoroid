@@ -2,18 +2,14 @@
 
 This document describes the guidelines to Meteoroid. If you are planning to contribute to the code you should read this document and get familiar with its content.
 
-
 ## General principles
 
-* Meteoroid programming language is Python.
-* Using [Django](https://www.djangoproject.com/) and [restframework](https://www.django-rest-framework.org/).
-* Using [OpenWhisk](https://openwhisk.apache.org/) as a FaaS platform.
-* Code contributed to Meteoroid must follow the [code style guidelines](#code-style-guidelines) in order to set a common programming style for all developers working on the code.
+Contributors must adhere to the following general principles:
 
-
-## Pull Request protocol
-
-Coming soon
+- Meteoroid programming language is Python.
+- Using [Django](https://www.djangoproject.com/) and [restframework](https://www.django-rest-framework.org/).
+- Using [OpenWhisk](https://openwhisk.apache.org/) as a FaaS platform.
+- Code contributed to Meteoroid must follow the [code style guidelines](#code-style-guidelines) in order to set a common programming style for all developers working on the code.
 
 ## Code style guidelines
 

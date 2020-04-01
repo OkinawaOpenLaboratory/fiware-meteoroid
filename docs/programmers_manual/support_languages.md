@@ -1,8 +1,8 @@
 # Using Java language
 [The process of creating Java function depends on OpenWhisk.](https://github.com/apache/openwhisk/blob/master/docs/actions-java.md)
-You must use JDK8 in order to compile.
+You must use JDK8 to compile.
 
-You must write main method that has the exact signature as follows.
+You must write the main method that has the exact signature as follows.
 
 ```java
 public static JsonObject main(JsonObject args)
@@ -48,3 +48,26 @@ You need to specify the name of the main class using --main.
 ```bash
 meteoroid function create function1 hello.jar --language java --main Hello
 ```
+
+# Using Python language
+[The process of creating Python function depends on OpenWhisk.](https://github.com/apache/openwhisk/blob/master/docs/actions-python.md)
+
+
+Python function is a top-level function called main, create a file called hello.py.
+
+```python
+def main(args):
+    name = args.get("name", "stranger")
+    greeting = "Hello " + name + "!"
+    print(greeting)
+    return {"greeting": greeting}
+```
+
+
+Create a function.
+
+```bash
+meteoroid fucntion create function1 hello.py
+```
+
+If you want to use other entry methods, you must specify the method name using --main.

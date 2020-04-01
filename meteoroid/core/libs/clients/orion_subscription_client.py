@@ -22,7 +22,7 @@ class OrionSubscriptionClient:
         self.host = os.environ.get('FIWARE_ORION_HOST', '')
         self.endpoint = f'http://{self.host}/v2/subscriptions'
         self.headers = {
-            'User-Agent': 'fiware-meteoroid/0.1'
+            'User-Agent': 'fiware-meteoroid/1.0'
         }
 
     def set_headers(self, fiware_service, fiware_service_path):
