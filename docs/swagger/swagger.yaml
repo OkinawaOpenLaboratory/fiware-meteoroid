@@ -1,0 +1,1016 @@
+---
+swagger: "2.0"
+info:
+  description: FIWARE Meteoroid APIs.
+  version: 1.0.0
+  title: FIWARE Meteoroid APIs
+  contact:
+    email: fiware-meteoroid-member@okinawaopenlabs.org
+basePath: /
+tags:
+- name: functions
+  description: Function API
+- name: endpoints
+  description: Endpoint API
+- name: subscriptions
+  description: Subscription API
+- name: schedules
+  description: Scheduler API
+- name: results
+  description: Result API
+schemes:
+- https
+- http
+paths:
+  /api/v1/functions:
+    get:
+      tags:
+      - functions
+      summary: list functions
+      operationId: listFunctions
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      responses:
+        "200":
+          description: search results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Function'
+        "400":
+          description: bad input parameter
+    post:
+      tags:
+      - functions
+      summary: create function
+      description: Creates an function
+      operationId: createFunction
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - in: body
+        name: FunctionInfo
+        description: Function information
+        required: true
+        schema:
+          $ref: '#/definitions/FunctionInfo'
+      responses:
+        "201":
+          description: Function created successfully
+          schema:
+            $ref: '#/definitions/Function'
+        "400":
+          description: Invalid input, object invalid
+        "409":
+          description: An existing item already exists
+  /api/v1/functions/{id}:
+    get:
+      tags:
+      - functions
+      summary: retrieve function
+      description: |
+        Retrieve functions
+      operationId: retrieveFunctions
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Retrieve by function id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Retrieve function
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Function'
+        "400":
+          description: Bad input parameter
+    put:
+      tags:
+      - functions
+      summary: update function
+      description: Update function
+      operationId: updateFunction
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Retrieve by function id
+        required: true
+        type: string
+      - in: body
+        name: FunctionInfo
+        description: Function information
+        required: true
+        schema:
+          $ref: '#/definitions/FunctionInfo_1'
+      responses:
+        "201":
+          description: Function created successfully
+          schema:
+            $ref: '#/definitions/Function'
+        "400":
+          description: Invalid input, object invalid
+    delete:
+      tags:
+      - functions
+      summary: delete function
+      description: |
+        Delete function
+      operationId: deleteFunction
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Delete by function id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Function deleted successfully
+        "204":
+          description: Function deleted successfully
+        "400":
+          description: Bad input parameter
+  /api/v1/endpoints:
+    get:
+      tags:
+      - endpoints
+      summary: list endpoints
+      operationId: listEndpoints
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      responses:
+        "200":
+          description: search results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Endpoint'
+        "400":
+          description: Bad input parameter
+    post:
+      tags:
+      - endpoints
+      summary: create endpoint
+      description: Creates an endpoint
+      operationId: createEndpoint
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - in: body
+        name: EndpointInfo
+        description: Endpoint information
+        required: true
+        schema:
+          $ref: '#/definitions/EndpointInfo'
+      responses:
+        "201":
+          description: Endpoint created successfully
+          schema:
+            $ref: '#/definitions/Endpoint'
+        "400":
+          description: Invalid input, object invalid
+        "409":
+          description: An existing endpoint already exists
+  /api/v1/endpoints/{id}:
+    get:
+      tags:
+      - endpoints
+      summary: retrieve endpoint
+      description: |
+        Retrieve endpoint
+      operationId: retrieveEndpoint
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Retrieve by endpoint id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Retrieve endpoint
+          schema:
+            $ref: '#/definitions/Endpoint'
+        "400":
+          description: Bad input parameter
+    delete:
+      tags:
+      - endpoints
+      summary: delete endpoint
+      description: |
+        Delete endpoint
+      operationId: deleteEndpoint
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Delete endpoint by id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Endpoint deleted successfully
+        "204":
+          description: Endpoint deleted successfully
+        "400":
+          description: Bad input parameter
+  /api/v1/subscriptions:
+    get:
+      tags:
+      - subscriptions
+      summary: list subscriptions
+      operationId: listSubscriptions
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Search results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Subscription'
+        "400":
+          description: Bad input parameter
+    post:
+      tags:
+      - subscriptions
+      summary: create subscription
+      description: Creates an subscription
+      operationId: createSubscription
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - in: body
+        name: SubscriptionInfo
+        description: Subscription information
+        required: true
+        schema:
+          $ref: '#/definitions/SubscriptionInfo'
+      responses:
+        "201":
+          description: Subscription created successfully
+          schema:
+            $ref: '#/definitions/Subscription'
+        "400":
+          description: Invalid input, object invalid
+        "409":
+          description: An existing subscription already exists
+  /api/v1/subscriptions/{id}:
+    get:
+      tags:
+      - subscriptions
+      summary: retrieve subscription
+      description: |
+        Retrieve subscriptions
+      operationId: retrieveSubscriptions
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Retrieve subscription by id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Retrieve subscription
+          schema:
+            $ref: '#/definitions/Subscription'
+        "400":
+          description: Bad input parameter
+    delete:
+      tags:
+      - subscriptions
+      summary: delete subscription
+      description: |
+        Delete subscription
+      operationId: deleteSubscription
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Delete subscription by id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Subscription deleted successfully
+        "204":
+          description: Subscription deleted successfully
+        "400":
+          description: Bad input parameter
+  /api/v1/schedules:
+    get:
+      tags:
+      - schedules
+      summary: list schedules
+      description: |
+        List schedules
+      operationId: listSchedules
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Search results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Schedule'
+        "400":
+          description: Bad input parameter
+    post:
+      tags:
+      - schedules
+      summary: create schedule
+      description: Adds an schedule
+      operationId: addSchecule
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - in: body
+        name: scheduleInfo
+        description: Schedule information
+        required: true
+        schema:
+          $ref: '#/definitions/scheduleInfo'
+      responses:
+        "201":
+          description: Schedule created successfully
+          schema:
+            $ref: '#/definitions/Schedule'
+        "400":
+          description: Invalid input, object invalid
+        "409":
+          description: An existing schedule already exists
+  /api/v1/schedules/{id}:
+    get:
+      tags:
+      - schedules
+      summary: retrieve schedule
+      description: |
+        Retrieve schedules
+      operationId: retrieveSchedules
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Retrieve by schedule id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Retrieve schedule
+          schema:
+            $ref: '#/definitions/Schedule'
+        "400":
+          description: Bad input parameter
+    delete:
+      tags:
+      - schedules
+      summary: delete schedule
+      description: |
+        Delete schedules
+      operationId: deleteSchedules
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Delete by schedule id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Schedule deleted successfully
+        "204":
+          description: Schedule deleted successfully
+        "400":
+          description: Bad input parameter
+  /api/v1/results:
+    get:
+      tags:
+      - results
+      summary: list results
+      operationId: listResults
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Search results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Result'
+        "400":
+          description: Bad input parameter
+  /api/v1/results/{id}:
+    get:
+      tags:
+      - results
+      summary: Retrieve results
+      operationId: retrieveResult
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Retrieve by result id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Search results
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Result'
+        "400":
+          description: Bad input parameter
+  /api/v1/results/{id}/logs:
+    get:
+      tags:
+      - results
+      summary: Retrieve logs
+      operationId: retrieveLogs
+      produces:
+      - application/json
+      parameters:
+      - name: Fiware-Service
+        in: header
+        description: Fiware Service
+        required: false
+        type: string
+      - name: Fiware-ServicePath
+        in: header
+        description: Fiware Service Path
+        required: false
+        type: string
+      - name: id
+        in: path
+        description: Retrieve by result id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Search results
+          schema:
+            $ref: '#/definitions/Log'
+        "400":
+          description: Bad input parameter
+definitions:
+  Function:
+    type: object
+    required:
+    - code
+    - id
+    - name
+    properties:
+      id:
+        type: string
+        example: "1"
+        description: Function ID.
+      name:
+        type: string
+        example: function1
+        description: Function name.
+      code:
+        type: string
+        example: 'def main(args): return {"test": "test"}'
+        description: The code to execute.
+      language:
+        type: string
+        example: python:3
+        description: The type of programming language.
+      binary:
+        type: boolean
+        example: false
+        description: Whether the action has a binary attachment or not. This attribute is ignored when creating or updating an action.
+      main:
+        type: string
+        description: main entrypoint of the action code
+      version:
+        type: string
+        example: 0.0.1
+        description: The version of function.
+      parameters:
+        type: array
+        description: Parameters that can be referenced inside the function
+        items:
+          type: object
+          example:
+            key: orion_endpoint
+            value: orion:1026
+          properties: {}
+      fiware_service:
+        type: string
+        example: ""
+      fiware_service_path:
+        type: string
+        example: /
+  Endpoint:
+    type: object
+    required:
+    - function
+    - id
+    - method
+    - name
+    - path
+    properties:
+      id:
+        type: string
+        example: "1"
+        description: Endpoint ID.
+      name:
+        type: string
+        example: endpoint1
+        description: Endpoint name.
+      function:
+        type: string
+        example: "1"
+        description: Function ID.
+      path:
+        type: string
+        example: /hello
+        description: Path
+      method:
+        type: string
+        example: post
+        description: HTTP Method.
+      url:
+        type: string
+        example: http://apigateway:9090/api/23bc46b1-71f6-4ed5-8c54-816aa4f8c502/endpoint1/hello
+        description: Callable URL.
+      fiware_service:
+        type: string
+        example: ""
+        description: FIWARE Service.
+      fiware_service_path:
+        type: string
+        example: /
+        description: FIWARE Service Path
+  Subscription:
+    type: object
+    required:
+    - endpoint_id
+    - id
+    - orion_subscription_id
+    properties:
+      id:
+        type: string
+        example: "1"
+        description: Subscription ID.
+      orion_subscription_id:
+        type: string
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        description: FIWARE Orion Subscription ID.
+      endpoint_id:
+        type: string
+        example: "1"
+        description: Endpoint ID
+      fiware_service:
+        type: string
+        example: ""
+        description: FIWARE Service.
+      fiware_service_path:
+        type: string
+        example: /
+        description: FIWARE Service Path.
+  Schedule:
+    type: object
+    required:
+    - function
+    - id
+    - schedule
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        description: Schedule ID.
+      schedule:
+        type: string
+        example: '*/20 * * * * *'
+        description: |
+          Specify trigger schedule.
+      function:
+        type: string
+        example: function1
+      name:
+        type: string
+        example: every 20 seconds timer
+      startDate:
+        type: string
+        format: ISO8601
+        example: 2020-01-01T23:59:00.000Z
+      stopDate:
+        type: string
+        format: ISO8601
+        example: 2020-02-01T23:59:00.000Z
+      trigger_payload:
+        type: array
+        example:
+        - key: name
+          value: meteoroid
+        description: Specify the payload to be passed to function.
+        items:
+          type: object
+          properties: {}
+  Result:
+    type: object
+    properties:
+      activation_id:
+        type: string
+        example: aa30e19f3bd543c9b0e19f3bd5d3c9e1
+        description: OpenWhisk Activation ID.
+      name:
+        type: string
+        example: hello
+        description: OpenWhisk Action Name.
+      namespace:
+        type: string
+        example: guest
+        description: OpenWhisk Namespace.
+      annotations:
+        type: object
+        example:
+        - key: path
+          value: guest/hello
+        description: OpenWhisk Annotations.
+        properties: {}
+      duration:
+        type: integer
+        example: 238
+        description: OpenWhisk Duration
+      start:
+        type: string
+        example: "1582069086757"
+        description: Start time.
+      end:
+        type: string
+        example: "1582069086995"
+        description: End time.
+      publish:
+        type: integer
+        example: "false"
+        description: OpenWhisk Publish.
+      status_code:
+        type: integer
+        example: 0
+        description: OpenWhisk status code.
+      version:
+        type: string
+        example: 0.0.1
+        description: Version.
+  Log:
+    type: object
+    properties:
+      logs:
+        type: array
+        description: Interleaved standard output and error of an activation
+        items:
+          type: string
+  FunctionInfo:
+    type: object
+    properties:
+      name:
+        type: string
+        example: function1
+      code:
+        type: string
+        example: 'def main(args): return {"test": "test"}'
+      language:
+        type: string
+        example: python:3
+      main:
+        type: string
+        example: ""
+      parameters:
+        type: array
+        example:
+        - key: orion_endpoint
+          value: orion:1026
+        - key: timeout
+          value: 60
+        description: Parameters that can be referenced inside the function
+        items:
+          type: object
+          properties: {}
+      binary:
+        type: boolean
+        example: false
+  FunctionInfo_1:
+    type: object
+    properties:
+      name:
+        type: string
+        example: function1
+      code:
+        type: string
+        example: 'def main(args): return {"test": "test"}'
+      language:
+        type: string
+        example: python:3
+      main:
+        type: string
+        example: ""
+      parameters:
+        type: array
+        example:
+        - key: orion_endpoint
+          value: orion:1026
+        - key: timeout
+          value: 60
+        description: Parameters that can be referenced inside the function
+        items:
+          type: object
+          properties: {}
+      binary:
+        type: boolean
+        example: false
+  EndpointInfo:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "1"
+        description: Endpoint ID
+      function:
+        type: string
+        example: "1"
+        description: Function ID
+      path:
+        type: string
+        example: /hello
+      method:
+        type: string
+        example: post
+        enum:
+        - post
+        - get
+        - put
+        - delete
+  SubscriptionInfo:
+    type: object
+    properties:
+      endpoint_id:
+        type: string
+        example: "1"
+      orion_subscription:
+        type: object
+        example:
+          description: test subscription
+          subject:
+            entities:
+            - id: Room1
+              type: Room
+          notification:
+            attrs:
+            - temperature
+          expires: 2040-01-01T14:00:00.00Z
+          throttling: 1
+        properties: {}
+  scheduleInfo:
+    type: object
+    properties:
+      schedule:
+        type: string
+        example: '*/20 * * * * *'
+        description: |
+          Specify trigger schedule.
+      function:
+        type: string
+        example: function1
+      name:
+        type: string
+        example: every 20 seconds timer
+      startDate:
+        type: string
+        format: ISO8601
+        example: 2020-01-01T23:59:00.000Z
+      stopDate:
+        type: string
+        format: ISO8601
+        example: 2020-02-01T23:59:00.000Z
+      trigger_payload:
+        type: array
+        example:
+        - key: name
+          value: meteoroid
+        description: Specify the payload to be passed to function.
+        items:
+          type: object
+          properties: {}

@@ -20,7 +20,7 @@ services:
 
   meteoroid:
     build: ../
-    image: meteoroid/core:0.2.0
+    image: meteoroid/core:1.0
     stdin_open: true
     tty: true
     depends_on:
@@ -42,7 +42,7 @@ services:
 
   migration:
     build: ../
-    image: meteoroid/core:0.0.1
+    image: meteoroid/core:1.0
     command: python meteoroid/manage.py migrate
     links:
       - mongo
@@ -58,7 +58,7 @@ services:
 
   alarm-package-installer:
     build: ./alarm-package-installer/
-    image: meteoroid/alarm-package-installer:0.2
+    image: meteoroid/alarm-package-installer:1.0
     working_dir: /openwhisk-package-alarms
     command: ./installCatalog.sh 789c46b1-71f6-4ed5-8c54-816aa4f8c502:abczO3xZCLrMN6v2BKK1dXYFpXlPkccOFqm12CdAsMgRU4VrNZ9lyGVCGuMDGIwP apigateway http://db:5984 whisk apigateway
     environment:
