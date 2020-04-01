@@ -4,9 +4,6 @@ repo_url: https://github.com/OkinawaOpenLaboratory/fiware-meteoroid
 site_description: Meteoroid Documentation
 docs_dir: docs
 theme: readthedocs
-extra_css:
-  - 'https://www.fiware.org/style/fiware_readthedocs.css'
-  - 'https://www.fiware.org/style/fiware_readthedocs_core.css'
 nav:
   - Home: index.md
   - 'Features': 'features.md'
