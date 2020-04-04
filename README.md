@@ -16,7 +16,7 @@ Please see [here](https://fiware-meteoroid.readthedocs.io/en/latest/) for full d
 
 You should read this if you plan to contribute with code to Meteoroid
 
-* [Contribution guidelines](./docs/manuals/contribution_guidelines.md)
+* [Contribution guidelines](./docs/contribution_guidelines.md)
 
 ## License
 
