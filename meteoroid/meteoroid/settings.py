@@ -79,10 +79,12 @@ WSGI_APPLICATION = 'meteoroid.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
+        'USER':  os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'NAME': 'meteoroid',
         'AUTH_SOURCE': 'admin',
-        'HOST': 'mongo',
-        'PORT': 27017,
+        'HOST': os.environ.get('DB_HOST', 'mongo'),
+        'PORT': os.environ.get('DB_PORT', 27017),
     }
 }
 
