@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: orion
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+    - port: 1026
+      targetPort: orion-port
+      protocol: TCP
+      nodePort: {{ .Values.orion.nodePort }}
+  selector:
+    {{- include "fiware.selectorLabels" . | nindent 4 }}

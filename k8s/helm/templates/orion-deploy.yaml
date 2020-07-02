@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orion
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.orion.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "fiware.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fiware.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "fiware.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.orion.image.repository }}:{{ .Values.orion.image.version }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: orion-port
+              containerPort: 1026
+              protocol: TCP
+          args: ["-dbhost", "fiware-mongodb", "-logLevel", "DEBUG"]
+          livenessProbe:
+            httpGet:
+              path: /version
+              port: orion-port
+          readinessProbe:
+            httpGet:
+              path: /version
+              port: orion-port
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: meteoroid
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: meteoroid-port
+      protocol: TCP
+      nodePort: {{ .Values.meteoroid.nodePort }}
+  selector:
+    {{- include "fiware.selectorLabels" . | nindent 4 }}

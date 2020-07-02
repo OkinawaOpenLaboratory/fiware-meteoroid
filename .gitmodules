@@ -1,3 +1,6 @@
 [submodule "docker/openwhisk-devtools"]
 	path = docker/openwhisk-devtools
 	url = https://github.com/apache/openwhisk-devtools.git
+[submodule "k8s/helm/openwhisk-deploy-kube"]
+	path = k8s/helm/openwhisk-deploy-kube
+	url = https://github.com/apache/openwhisk-deploy-kube.git

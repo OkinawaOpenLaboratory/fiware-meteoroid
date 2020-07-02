@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quantumleap
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.quantumleap.ql.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "fiware.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fiware.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "fiware.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.quantumleap.ql.image.name }}:{{ .Values.quantumleap.ql.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: ql-port
+              containerPort: 8668
+              protocol: TCP
+          env:
+            - name: CRATE_HOST
+              value: {{ .Values.quantumleap.ql.db }}
+          livenessProbe:
+            httpGet:
+              path: /v2/version
+              port: ql-port
+          readinessProbe:
+            httpGet:
+              path: /v2/version
+              port: ql-port
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

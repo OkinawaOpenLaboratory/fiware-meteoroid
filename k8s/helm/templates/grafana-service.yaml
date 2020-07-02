@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort: grafana-port
+      protocol: TCP
+      nodePort: {{ .Values.quantumleap.ui.nodePort }}
+  selector:
+    {{- include "fiware.selectorLabels" . | nindent 4 }}

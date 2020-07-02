@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quantumleap
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+    - port: 8668
+      targetPort: ql-port
+      protocol: TCP
+      nodePort: {{ .Values.quantumleap.ql.nodePort }}
+  selector:
+    {{- include "fiware.selectorLabels" . | nindent 4 }}
