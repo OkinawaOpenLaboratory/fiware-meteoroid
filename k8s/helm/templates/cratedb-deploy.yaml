@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cratedb
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "fiware.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fiware.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "fiware.serviceAccountName" . }}
+      containers:
+        - name: cratedb
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.quantumleap.db.image.name }}:{{ .Values.quantumleap.db.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: crate-admin
+              containerPort: 4200
+              protocol: TCP
+            - name: crate
+              containerPort: 4300
+              protocol: TCP
+            - name: sql-port
+              containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+          - name: nfs
+            mountPath: /data
+          args:
+            - "crate"
+            - "-Clicense.enterprise=false"
+            - "-Cauth.host_based.enabled=false"
+            - "-Ccluster.name=democluster"
+            - "-Chttp.cors.enabled=true"
+            - "-Chttp.cors.allow-origin=\"*\""
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: cratedb-pvc

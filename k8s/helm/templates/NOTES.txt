@@ -1,0 +1,26 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }} -n {{ .Release.Namespace }}
+  $ helm get all {{ .Release.Name }} -n {{ .Release.Namespace }}
+
+You can access You can access the following FIWARE services.
+
+  Orion Context Broker endpoint:
+    http://{{ .Values.openwhisk.whisk.ingress.apiHostName }}:{{ .Values.orion.nodePort }}
+
+  Quantum Leap endpoint:
+    http://{{ .Values.openwhisk.whisk.ingress.apiHostName }}:{{ .Values.quantumleap.ql.nodePort }}
+
+  Quantum Leap GUI(Grafana):
+    http://{{ .Values.openwhisk.whisk.ingress.apiHostName }}:{{ .Values.quantumleap.ui.nodePort }}
+
+  Meteoroid endpoint:
+    http://{{ .Values.openwhisk.whisk.ingress.apiHostName }}:{{ .Values.meteoroid.nodePort }}
+
+  OpenWhisk Metrics UI(Grafana):
+    http://{{ .Values.openwhisk.whisk.ingress.apiHostName }}:{{ .Values.openwhisk.whisk.ingress.apiHostPort }}/monitoring
+

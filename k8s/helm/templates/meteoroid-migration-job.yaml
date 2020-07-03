@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: meteoroid-migration
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ include "fiware.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.meteoroid.image.name }}:{{ .Values.meteoroid.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          command: ["python", "meteoroid/manage.py", "migrate"]
+          env:
+            - name: OPEN_WHISK_HOST
+              value: fiware-apigateway
+            - name: OPEN_WHISK_APIGATEWAY_PORT
+              value: {{ .Values.meteoroid.env.OPEN_WHISK_APIGATEWAY_PORT | quote }}
+            - name: OPEN_WHISK_USER
+              value: 23bc46b1-71f6-4ed5-8c54-816aa4f8c502
+            - name: OPEN_WHISK_PASSWORD
+              value: 123zO3xZCLrMN6v2BKK1dXYFpXlPkccOFqm12CdAsMgRU4VrNZ9lyGVCGuMDGIwP
+            - name: FIWARE_ORION_HOST
+              value: fiware:1026
+            - name: DB_HOST
+              value: fiware-mongodb
+      restartPolicy: Never
