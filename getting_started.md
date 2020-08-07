@@ -1,3 +1,5 @@
+
+
 # Getting started
 
 This getting started realizes a scenario such as the following image.
@@ -7,6 +9,7 @@ This getting started realizes a scenario such as the following image.
 3. The function writes messages according to the value of temperature to result.
 4. User can confirm results using wsk.
 
+![getting_started](https://user-images.githubusercontent.com/6661165/89624470-3f4d0c80-d8d1-11ea-925c-9e6576df66fc.png)
 
 
 ## Install
