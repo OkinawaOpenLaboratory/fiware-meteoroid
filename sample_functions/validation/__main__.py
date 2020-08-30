@@ -1,18 +1,17 @@
+import json
+import requests
 from jsonschema import validate, ValidationError
 
-# Define the schema for the validation
-schema = {
-    "type": "object",
-    "properties": {
-        "price": {"type": "number"},
-        "name": {"type": "string"},
-    },
-}
+schema = {}
+
+# Define the schema to schema.json for the validation
+with open('./schema.json') as f:
+    schema = json.load(f)
 
 
 def main(args):
     try:
         validate(instance=args, schema=schema)
-        return {"validaiton": "success"}
+        return {'validation': 'success'}
     except ValidationError as e:
-        return {"validation": "failed", "reason": e.message}
+        return {'validation': 'failed', 'reason': e.message}
