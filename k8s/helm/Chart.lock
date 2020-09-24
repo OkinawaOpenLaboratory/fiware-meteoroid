@@ -1,0 +1,12 @@
+dependencies:
+- name: mongodb
+  repository: https://charts.bitnami.com/bitnami
+  version: 7.10.10
+- name: openwhisk
+  repository: file://openwhisk-deploy-kube/helm/openwhisk/
+  version: 0.2.5
+- name: cp-helm-charts
+  repository: https://confluentinc.github.io/cp-helm-charts/
+  version: 0.5.0
+digest: sha256:de17a46a104a31b732dd4df9795daf0db38e28d0be36a6a35e2081295eaa61f9
+generated: "2020-09-24T08:02:01.367823566Z"

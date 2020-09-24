@@ -59,13 +59,22 @@ openwhisk:
     cloudant:
       enabled: false
     kafka:
-      enabled: false
+      enabled: true
   metrics:
     prometheusEnabled: true
     userMetricsEnabled: true
   kafka:
     persistence:
       size: 2Gi
+
+cp-helm-charts:
+  cp-kafka-rest:
+    enabled: false
+
+pixy:
+  image:
+    name: mailgun/kafka-pixy
+    tag: 0.17.0
 
 imagePullSecrets: []
 nameOverride: ""

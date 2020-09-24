@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pixy
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: pixy-port
+      protocol: TCP
+  selector:
+    {{- include "fiware.selectorLabels" . | nindent 4 }}

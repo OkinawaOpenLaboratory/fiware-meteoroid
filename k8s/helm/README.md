@@ -82,10 +82,13 @@ Parameter                                  | Description                        
 `openwhisk.invoker.containerFactory.kubernetes.isolateUserActions` | User action container network isolation | `false`
 `openwhisk.nginx.httpsNodePort`            | Node port number of OpenWhisk Nginx HTTPS port  | `31001`
 `openwhisk.providers.cloudant.enabled`     | Enable Cloudant provider                        | `false`
-`openwhisk.providers.kafka.enabled`        | Enable Kafka provider                           | `false`
+`openwhisk.providers.kafka.enabled`        | Enable Kafka provider                           | `true`
 `openwhisk.metrics.prometheusEnabled`      | Enable system metrics using prometheus          | `true`
 `openwhisk.metrics.userMetricsEnabled`     | Enable user metrics using prometheus            | `true`
 `openwhisk.kafka.persistence.size`         | Kafka persistence size                          | `2Gi`
+`cp-helm-charts.cp-kafka-rest.enabled`     | Enable Kafka REST Proxy                         | `false`
+`pixy.image.name`                          | Image source repository name of Kafka Pixy      | `mailgun/kafka-pixy`
+`pixy.image.tag`                           | Kafka Pixy release tag                          | `0.17.0`
 
 For more information about OpenWhisk configuration please see [configurationChoices](https://github.com/apache/openwhisk-deploy-kube/blob/master/docs/configurationChoices.md).
 
