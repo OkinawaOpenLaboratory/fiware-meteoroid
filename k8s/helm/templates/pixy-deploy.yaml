@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-pixy
+  labels:
+    {{- include "fiware.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.pixy.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "fiware.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "fiware.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "fiware.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.pixy.image.name }}:{{ .Values.pixy.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: pixy-port
+              containerPort: 80
+              protocol: TCP
+          command:
+            - kafka-pixy
+            - -kafkaPeers
+            - "{{ .Release.Name }}-cp-kafka:9092"
+            - -zookeeperPeers
+            - "{{ .Release.Name }}-cp-zookeeper:2181"
+            - -tcpAddr
+            - 0.0.0.0:80
+          livenessProbe:
+            httpGet:
+              path: /topics
+              port: pixy-port
+          readinessProbe:
+            httpGet:
+              path: /topics
+              port: pixy-port
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

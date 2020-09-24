@@ -1,6 +1,6 @@
 apiVersion: v2
 name: fiware
-description: A Helm chart for Kubernetes
+description: A Helm chart for FIWARE and Meteoroid
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -27,3 +27,6 @@ dependencies:
   - name: openwhisk
     version: "0.2.5"
     repository: "file://openwhisk-deploy-kube/helm/openwhisk/"
+  - name: cp-helm-charts
+    version: "0.5.0"
+    repository: "https://confluentinc.github.io/cp-helm-charts/"

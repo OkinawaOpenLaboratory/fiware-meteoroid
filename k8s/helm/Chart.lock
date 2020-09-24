@@ -5,5 +5,8 @@ dependencies:
 - name: openwhisk
   repository: file://openwhisk-deploy-kube/helm/openwhisk/
   version: 0.2.5
-digest: sha256:ae46bb37e81f5e481aaa815fa0932c911f235795b9f4ed6cad90508a3c3d16da
-generated: "2020-09-24T07:58:10.04808068Z"
+- name: cp-helm-charts
+  repository: https://confluentinc.github.io/cp-helm-charts/
+  version: 0.5.0
+digest: sha256:de17a46a104a31b732dd4df9795daf0db38e28d0be36a6a35e2081295eaa61f9
+generated: "2020-09-24T08:02:01.367823566Z"
