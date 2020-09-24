@@ -25,5 +25,5 @@ dependencies:
     version: "7.10.10"
     repository: "@bitnami"
   - name: openwhisk
-    version: "0.2.1"
+    version: "0.2.5"
     repository: "file://openwhisk-deploy-kube/helm/openwhisk/"

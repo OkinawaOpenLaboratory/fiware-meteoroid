@@ -1,0 +1,9 @@
+dependencies:
+- name: mongodb
+  repository: https://charts.bitnami.com/bitnami
+  version: 7.10.10
+- name: openwhisk
+  repository: file://openwhisk-deploy-kube/helm/openwhisk/
+  version: 0.2.5
+digest: sha256:ae46bb37e81f5e481aaa815fa0932c911f235795b9f4ed6cad90508a3c3d16da
+generated: "2020-09-24T07:58:10.04808068Z"
