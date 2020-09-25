@@ -21,11 +21,12 @@ def convert_to_ngsi_entity(data, schema):
     result['type'] = entity_type
     attrs = {k: v for k, v in data.items() if k not in ['id', 'type']}
     for k, v in attrs.items():
-        attr_type = schema['properties'][k]['type']
-        result[k] = {
-            'value': data[k],
-            'type': attr_type
-        }
+        if k in schema['properties']:
+            attr_type = schema['properties'][k]['type']
+            result[k] = {
+                'value': data[k],
+                'type': attr_type
+            }
     return result
 
 

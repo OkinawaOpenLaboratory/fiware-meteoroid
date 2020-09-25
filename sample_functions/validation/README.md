@@ -12,10 +12,10 @@ Create a virtualenv as follows:
 docker run --rm -v "$PWD:/tmp" openwhisk/python3action bash   -c "cd tmp && virtualenv virtualenv && source virtualenv/bin/activate && pip install -r requirements.txt"
 ```
 
-Create a zip file containing the virtualenv directory and *__main__.py*.
+Create a zip file containing the virtualenv directory, schema.json and *__main__.py*.
 
 ```
-zip -r custom.zip virtualenv __main__.py
+zip -r custom.zip virtualenv __main__.py schema.json
 ```
 
 Create a function with the name validation.
