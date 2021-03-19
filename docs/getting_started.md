@@ -303,3 +303,23 @@ Output:
 | response      | OrderedDict([('result', OrderedDict([('message', 'Dangerous because it’s too hot!'), ('temperature', 40)])), ('size', 68), ('status', 'success'), ('success', True)]) |
 +---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 ```
+
+---
+
+###Show detailed logs of function
+Show detailed log of function with the wsk CLI.
+You can't show a detailed log of the function with the Meteoroid CLI.
+You can show a detailed log of the function by using the wsk CLI instead of the Meteoroid CLI.
+
+`wsk activation logs [activation ID]`
+
+```
+wsk activation logs 3f77cf6e89bb4941b7cf6e89bba94122 
+```
+
+Output:
+
+```
+2021-03-19T00:03:33.27579709Z  stdout: 30 No problem.
+``` 
+
