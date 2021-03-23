@@ -324,7 +324,7 @@ Output:
 
 Show execution logs with the wsk CLI when function error occurs.  
 
-using curl  
+Update the temperature attribute using curl.   
 ```bash
 curl http://localhost:1026/v2/entities/Room1/attrs -H 'Content-Type: application/json' -d @- <<EOF
 {
@@ -334,6 +334,8 @@ curl http://localhost:1026/v2/entities/Room1/attrs -H 'Content-Type: application
 }
 EOF
 ```
+
+Obtain results of function using Meteoroid CLI.  
 
 ```
 meteoroid result list
@@ -349,6 +351,8 @@ Output:
 | 3f77cf6e89bb4941b7cf6e89bba94122 | Thermometer | guest     |       28 | 1583462834589 | 1583462834617 | False   |           0 | 0.0.1   |
 +----------------------------------+-------------+-----------+----------+---------------+---------------+---------+-------------+---------+
 ```
+
+Show execution logs of function using wsk CLI.  
 
 ```
 wsk activation logs 465e63e6db4a49949e63e6db4ad99434
