@@ -302,4 +302,69 @@ Output:
 | logs          | ['2020-03-06T02:47:14.6097906Z   stdout: 40 Dangerous because it’s too hot!']                                                                                         |
 | response      | OrderedDict([('result', OrderedDict([('message', 'Dangerous because it’s too hot!'), ('temperature', 40)])), ('size', 68), ('status', 'success'), ('success', True)]) |
 +---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+``` 
+
+### Show execution logs of function  
+Show execution logs of function with the wsk CLI.  
+
+You can't show execution logs of function with the Meteoroid CLI.  
+You can show execution logs of function with the wsk CLI instead of the Meteoroid CLI.  
+The activation ID used in the Meteoroid CLI can also be used in the wsk CLI.  
+
+`wsk activation logs [meteoroid activation ID]`  
+
+```
+wsk activation logs 3f77cf6e89bb4941b7cf6e89bba94122
+```
+
+Output:  
+```
+2021-03-22T09:32:49.311779469Z stdout: 40 Dangerous because it’s too hot!
+```
+
+Show execution logs with the wsk CLI when function error occurs.  
+
+Update the temperature attribute using curl.   
+```bash
+curl http://localhost:1026/v2/entities/Room1/attrs -H 'Content-Type: application/json' -d @- <<EOF
+{
+    "temperature": {
+        "value": "40"
+    }
+}
+EOF
+```
+
+Obtain results of function using Meteoroid CLI.  
+
+```
+meteoroid result list
+```
+
+Output:  
+
+```
++----------------------------------+-------------+-----------+----------+---------------+---------------+---------+-------------+---------+
+| activation_id                    | name        | namespace | duration | start         | end           | publish | status_code | version |
++----------------------------------+-------------+-----------+----------+---------------+---------------+---------+-------------+---------+
+| 465e63e6db4a49949e63e6db4ad99434 | Thermometer | guest     |       22 | 1616406127403 | 1616406127425 | False   |           2 | 0.0.1   |
+| 3f77cf6e89bb4941b7cf6e89bba94122 | Thermometer | guest     |       28 | 1583462834589 | 1583462834617 | False   |           0 | 0.0.1   |
++----------------------------------+-------------+-----------+----------+---------------+---------------+---------+-------------+---------+
+```
+
+Show execution logs of function using wsk CLI.  
+
+```
+wsk activation logs 465e63e6db4a49949e63e6db4ad99434
+```
+
+Output:  
+```
+2021-03-22T09:42:07.42487097Z  stdout: Traceback (most recent call last):
+2021-03-22T09:42:07.424902976Z stdout:   File "pythonrunner.py", line 88, in run
+2021-03-22T09:42:07.424912169Z stdout:     exec('fun = %s(param)' % self.mainFn, self.global_context)
+2021-03-22T09:42:07.424923536Z stdout:   File "<string>", line 1, in <module>
+2021-03-22T09:42:07.424931899Z stdout:   File "__main__.py", line 5, in main
+2021-03-22T09:42:07.424939299Z stdout: TypeError: '>' not supported between instances of 'str' and 'int'
+2021-03-22T09:42:07.425756678Z stderr: The action did not initialize or run as expected. Log data might be missing.
 ```
