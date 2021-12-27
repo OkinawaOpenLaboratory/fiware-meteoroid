@@ -1,0 +1,20 @@
+{
+  "id": "Person1",
+  "type": "Person",
+  "name": {
+    "value": "山田花子",
+    "type": "Text"
+  },
+  "address": {
+    "value": "沖縄県浦添市勢理客4-19-3",
+    "type": "Text"
+  },
+  "age": {
+    "value": 24,
+    "type": "Integer"
+  },
+  "gender": {
+    "value": "man",
+    "type": "Text"
+  }
+}
